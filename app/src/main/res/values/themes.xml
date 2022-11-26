@@ -1,16 +1,46 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.TRDZ_Dictionary" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="CoreTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">?superColor_1</item>
+        <item name="colorPrimaryVariant">?superColor_1</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondary">?superColor_2</item>
         <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">?superColor_3</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
+        <!-- Element styles. -->
     </style>
+
+
+    <style name="eva" >
+        <item name="android:ambientShadowAlpha">0.2</item>
+        <item name="android:spotShadowAlpha">1</item>
+    </style>
+
+    <style name="MyBaseTheme" parent="CoreTheme">
+        <item name="superColor_1">@color/main_color_first</item>
+        <item name="superColor_2">@color/main_color_second</item>
+        <item name="superColor_3">@color/main_color_first</item>
+    </style>
+
+    <style name="MyGoldTheme" parent="CoreTheme">
+        <item name="superColor_1">@color/main_color_first</item>
+        <item name="superColor_2">@color/main_color_third</item>
+        <item name="superColor_3">@color/main_color_first</item>
+    </style>
+
+    <style name="MyFiolTheme" parent="CoreTheme">
+        <item name="superColor_1">@color/main_color_fourth</item>
+        <item name="superColor_2">@color/main_color_second</item>
+        <item name="superColor_3">@color/main_color_fourth</item>
+    </style>
+
+    <style name="CoreTheme.Splash">
+        <item name="android:windowBackground">@drawable/splash_background</item>
+    </style>
+
+
 </resources>

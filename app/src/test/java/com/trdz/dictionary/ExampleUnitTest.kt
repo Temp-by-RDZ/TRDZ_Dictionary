@@ -1,4 +1,4 @@
-package com.trdz.trdz_dictionary
+package com.trdz.dictionary
 
 import org.junit.Test
 

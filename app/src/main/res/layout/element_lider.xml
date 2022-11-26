@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/lider_card"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/background_100"
+    app:strokeColor="@color/black"
+    app:strokeWidth="@dimen/lider_line_corner_width">
+
+    <View
+        android:id="@+id/click_zone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/card_height"
+        android:layout_marginEnd="@dimen/lider_line_right_space"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/lider_line_right_space"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_big"
+            android:textSize="@dimen/lider_line_text_size"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/trancript"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_marginStart="@dimen/margin_bigger"
+            android:textSize="@dimen/lider_line_text_size"/>
+
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/block_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|center"
+        android:layout_marginEnd="@dimen/card_icon_button_margin"
+        android:rotation="-90"
+        app:srcCompat="@drawable/ic_baseline_block_hide" />
+
+</com.google.android.material.card.MaterialCardView>

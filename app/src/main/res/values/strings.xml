@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">TRDZ_Dictionary</string>
+    <string name="app_name">Словарик</string>
+    <string name="word_list_title">Найденые слова</string>
+    <string name="word_list_alter">Чтоб узнать сегодня</string>
+    <string name="_0">0</string>
+    <string name="hint_help">Хочу найти…</string>
+    <string name="t_tire">-</string>
 </resources>
