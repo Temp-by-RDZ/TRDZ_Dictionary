@@ -8,7 +8,6 @@ const val EFFECT_SLIDE = "SLIDE"
 //Shared preference
 const val KEY_OPTIONS = "OPTNS"
 const val KEY_THEME = "THEME"
-const val KEY_NAME = "UNAME"
 
 //LIST TYPES
 const val TYPE_NONE = 0
