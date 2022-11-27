@@ -16,6 +16,9 @@ class RepositoryExecutor {
 	private val internalStorage: InternalStorage = InternalStorage()
 
 	fun dataUpdate(data: MutableList<DataWord>) {
+		if (data.isEmpty()) {
+			data.add(DataWord("Не найдено","Этого слова нет в ScyEng базе",-1,""))
+		}
 		currentData = data
 	}
 
@@ -27,9 +30,9 @@ class RepositoryExecutor {
 		}
 	}
 
-	fun update() {
+	fun update(target: String) {
 		Log.d("@@@", "Rep - User Saving...")
-		internalStorage.saveUsers(currentData).subscribe({
+		internalStorage.saveWords(currentData,target).subscribe({
 			Log.d("@@@", "Rep - ...Done")
 		}, {
 			Log.d("@@@", "Rep - ...Failed $it")

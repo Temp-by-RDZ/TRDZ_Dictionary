@@ -28,7 +28,7 @@ class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<Wi
 						Log.d("@@@", "Prs - Internal load complete")
 						val result = it.dataWord!!
 						repository.dataUpdate(result.toMutableList())
-						refresh(result)
+						refresh(repository.getList())
 						loadingState(false)
 					},
 					{
@@ -49,8 +49,8 @@ class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<Wi
 						Log.d("@@@", "Prs - External load complete")
 						val result = it.dataWord!!
 						repository.dataUpdate(result.toMutableList())
-						repository.update()
-						refresh(result)
+						repository.update(target)
+						refresh(repository.getList())
 						loadingState(false)
 					},
 					{

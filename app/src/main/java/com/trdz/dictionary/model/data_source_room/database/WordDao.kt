@@ -5,15 +5,14 @@ import io.reactivex.rxjava3.core.Completable
 
 @Dao
 interface WordDao {
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	abstract fun insert(word: WordEntity)
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	abstract fun insertAll(words: List<WordEntity>)
+	abstract fun saveWord(words: List<WordEntity>)
 
-	@Query("SELECT * FROM words")
-	abstract fun getUsers(): List<WordEntity>
+	@Transaction
+	@Query("SELECT * FROM word WHERE search = :search")
+	abstract fun getWords(search: String): List<WordEntity>
 
 	@Delete
-	abstract fun delete(wordDBObject: WordEntity): Completable
+	abstract fun delete(wordsDBObject: WordEntity): Completable
 }

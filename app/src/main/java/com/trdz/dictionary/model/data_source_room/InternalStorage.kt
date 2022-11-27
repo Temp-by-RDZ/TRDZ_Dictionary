@@ -15,14 +15,14 @@ class InternalStorage: ADataSource, InternalData {
 		return MyApp.di.get(WordDao::class)
 	}
 
-	override fun saveUsers(words: List<DataWord>): Completable = Completable.create {
+	override fun saveWords(words: List<DataWord>, search: String): Completable = Completable.create {
 		thread {
 			try {
-				val wordList: MutableList<WordEntity> = emptyList<WordEntity>().toMutableList()
+				val wordsList: MutableList<WordEntity> = emptyList<WordEntity>().toMutableList()
 				words.forEach { user ->
-					wordList.add(ResponseMapper.toStorage(user))
+					wordsList.add(ResponseMapper.toStorage(user, search))
 				}
-				getData().insertAll(wordList.toList())
+				getData().saveWord(wordsList.toList())
 				it.onComplete()
 			}
 			catch (e: Exception) {
@@ -34,7 +34,7 @@ class InternalStorage: ADataSource, InternalData {
 
 	override fun loadWords(target: String): Single<ServersResult> = Single.create {
 		try {
-			val response = getData().getUsers()
+			val response = getData().getWords(target)
 			if (response.isEmpty()) it.onError(responseEmpty())
 			else it.onSuccess(responseFormation(response))
 		}
@@ -51,7 +51,6 @@ class InternalStorage: ADataSource, InternalData {
 		}
 		return ServersResult(200, dataWord = wordList)
 	}
-
 
 	private fun responseEmpty() = Throwable("Error code: 404, Data lost\n")
 	private fun responseFail(error: Exception) = Throwable("Error code: -1, Internal storage unavailable:\n$error")
