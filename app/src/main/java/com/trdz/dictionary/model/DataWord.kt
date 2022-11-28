@@ -1,7 +1,11 @@
 package com.trdz.dictionary.model
 
+import android.os.Parcelable
+import com.google.gson.annotations.SerializedName
 import com.trdz.dictionary.base_utility.TYPE_TITLE
+import kotlinx.parcelize.Parcelize
 
+@Parcelize
 data class DataWord(
 	val name: String = "Name",
 	val subName: String = "Subname",
@@ -10,4 +14,4 @@ data class DataWord(
 	val type: Int = TYPE_TITLE,
 	val group: Int = 0,
 	var state: Int = 0,
-)
+): Parcelable

@@ -1,14 +1,15 @@
 package com.trdz.dictionary.view
 
+import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.AppCompatActivity
 import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.KEY_OPTIONS
 import com.trdz.dictionary.base_utility.KEY_THEME
-import moxy.MvpAppCompatActivity
 
-class MainActivity: MvpAppCompatActivity(), Leader {
+class MainActivity: AppCompatActivity(), Leader {
 
 	//region Elements
 

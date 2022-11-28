@@ -5,27 +5,26 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.trdz.dictionary.base_utility.KEY_BANDL
 import com.trdz.dictionary.base_utility.hideKeyboard
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
 import com.trdz.dictionary.model.DataWord
-import com.trdz.dictionary.model.RepositoryExecutor
-import com.trdz.dictionary.presenter.MainPresenter
-import com.trdz.dictionary.view.Leader
-import com.trdz.dictionary.view.MainActivity
-import moxy.MvpAppCompatFragment
-import moxy.ktx.moxyPresenter
+import com.trdz.dictionary.view_model.MainViewModel
+import com.trdz.dictionary.view_model.StatusProcess
 
 
-class WindowWordListImp: MvpAppCompatFragment(), WindowWordListOnClick, WindowWordList {
+class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	//region Elements
 
 	private var _binding: FragmentNavigationBinding? = null
 	private val binding get() = _binding!!
-	private var _executors: Leader? = null
-	private val executors get() = _executors!!
 	private val adapter = WindowWordListRecycle(this)
-	private val presenter by moxyPresenter { MainPresenter(RepositoryExecutor()) }
+	private val viewModel: MainViewModel by lazy  { ViewModelProvider(this).get(MainViewModel::class.java)}
+	private var last_used: List<DataWord> = listOf()
 
 	//endregion
 
@@ -34,38 +33,47 @@ class WindowWordListImp: MvpAppCompatFragment(), WindowWordListOnClick, WindowWo
 	override fun onDestroyView() {
 		super.onDestroyView()
 		_binding = null
-		_executors = null
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentNavigationBinding.inflate(inflater, container, false)
-		_executors = (requireActivity() as MainActivity)
 		return binding.root
 	}
 
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			binding.list.recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
-				binding.list.naming.isSelected = binding.list.recyclerView.canScrollVertically(-1)
-			}
-		}
-		binding.list.recyclerView.adapter = adapter
-		buttonBindings()
+		vmSetup()
+		bindings()
+		restore(savedInstanceState)
 	}
 
-	private fun buttonBindings() {
-		binding.target.requestFocus()
-		binding.floatButton.setOnClickListener {
-			val text = binding.target.text.toString()
-			if ((text != "") && (text != " ")) {
-				presenter.startSearch(text)
-				hideKeyboard()
+	private fun vmSetup() {
+		val observer = Observer<StatusProcess> { renderData(it) }
+		viewModel.getPodData().observe(viewLifecycleOwner, observer)
+	}
+
+	private fun bindings() {
+		with(binding) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				list.recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
+					list.naming.isSelected = binding.list.recyclerView.canScrollVertically(-1)
+				}
 			}
-			else {
-				binding.target.requestFocus()
-			}
-		}
+			list.recyclerView.adapter = adapter
+			target.requestFocus()
+			floatButton.setOnClickListener {
+				val text = binding.target.text.toString()
+				if ((text != "") && (text != " ")) {
+					viewModel.startSearch(text)
+					hideKeyboard()
+				}
+				else {
+					binding.target.requestFocus()
+				}
+			}}
+	}
+	private fun restore(bundle: Bundle?) {
+		bundle?.getParcelableArray(KEY_BANDL)?.let { refresh(it.toList() as List<DataWord>) }
 	}
 
 	//endregion
@@ -73,28 +81,49 @@ class WindowWordListImp: MvpAppCompatFragment(), WindowWordListOnClick, WindowWo
 	//region Adapter realization
 
 	override fun onItemClickSpecial(data: DataWord, position: Int) {
-		presenter.visualChange(data, position)
+		viewModel.visualChange(data, position)
 	}
 
 	//endregion
 
-	//region Presenter command realization
+	//region ViewModel command realization
 
-	override fun errorCatch() {
+	private fun renderData(material: StatusProcess) {
+		when (material) {
+			StatusProcess.Loading -> loadingState(true)
+			is StatusProcess.Error -> errorCatch()
+			is StatusProcess.Success -> {
+				refresh(material.data.data)
+				loadingState(material.data.loadState)
+			}
+			is StatusProcess.Change -> changeState(material.data,material.position,material.count)
+		}
+	}
+
+	private fun errorCatch() {
 		//("Not yet implemented")
 	}
 
-	override fun refresh(list: List<DataWord>) {
+	private fun refresh(list: List<DataWord>) {
+		last_used = list
 		adapter.setList(list)
 	}
 
-	override fun changeState(list: List<DataWord>, position: Int, count: Int) {
+	private fun changeState(list: List<DataWord>, position: Int, count: Int) {
+		last_used = list
 		adapter.stackControl(list, position, count)
 	}
 
-	override fun loadingState(state: Boolean) {
+	private fun loadingState(state: Boolean) {
 		binding.list.loadingLayout.visibility = if (state) View.VISIBLE
 		else View.GONE
+	}
+
+	override fun onSaveInstanceState(outState: Bundle) {
+		super.onSaveInstanceState(outState)
+		binding.run {
+			outState.putParcelableArray(KEY_BANDL, last_used.toTypedArray())
+		}
 	}
 
 	//endregion

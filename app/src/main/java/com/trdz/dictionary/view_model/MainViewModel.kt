@@ -1,25 +1,26 @@
-package com.trdz.dictionary.presenter
+package com.trdz.dictionary.view_model
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
 import com.trdz.dictionary.base_utility.*
 import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.model.RepositoryExecutor
-import com.trdz.dictionary.view.segment_users.WindowWordList
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.schedulers.Schedulers
-import moxy.MvpPresenter
 
-class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<WindowWordList>() {
+class MainViewModel(
+	private val dataLive: SingleLiveData<StatusProcess> = SingleLiveData(),
+	private val repository: RepositoryExecutor = RepositoryExecutor()
+	): ViewModel() {
 
-	override fun onFirstViewAttach() {
-		super.onFirstViewAttach()
-	}
+	fun getPodData(): LiveData<StatusProcess> = dataLive
 
 	fun startSearch(target: String) {
 		Log.d("@@@", "Prs - Start loading")
-		with(viewState) {
+		with(dataLive) {
 			repository.setSource(IN_STORAGE)
-			loadingState(true)
+			postValue(StatusProcess.Loading)
 			repository.getInitList(target)
 				.subscribeOn(Schedulers.io())
 				.observeOn(AndroidSchedulers.mainThread())
@@ -28,8 +29,7 @@ class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<Wi
 						Log.d("@@@", "Prs - Internal load complete")
 						val result = it.dataWord!!
 						repository.dataUpdate(result.toMutableList())
-						refresh(repository.getList())
-						loadingState(false)
+						postValue(StatusProcess.Success(ModelResult(repository.getList())))
 					},
 					{
 						Log.w("@@@", "Prs - Failed internal load start external loading $it")
@@ -39,7 +39,7 @@ class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<Wi
 	}
 
 	private fun startLoad(target: String) {
-		with(viewState) {
+		with(dataLive) {
 			repository.setSource(IN_SERVER)
 			repository.getInitList(target)
 				.subscribeOn(Schedulers.io())
@@ -50,13 +50,11 @@ class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<Wi
 						val result = it.dataWord!!
 						repository.dataUpdate(result.toMutableList())
 						repository.update(target)
-						refresh(repository.getList())
-						loadingState(false)
+						postValue(StatusProcess.Success(ModelResult(repository.getList())))
 					},
 					{
 						Log.e("@@@", "Prs - Loading failed $it")
-						viewState.errorCatch()
-						loadingState(false)
+						postValue(StatusProcess.Error(-2,it))
 					})
 		}
 	}
@@ -68,7 +66,7 @@ class MainPresenter(private val repository: RepositoryExecutor): MvpPresenter<Wi
 		else {
 			repository.changeStateAt(data, position, 1)
 		}
-		viewState.changeState(repository.getList(), position + 1, count)
+		dataLive.postValue(StatusProcess.Change(repository.getList(), position + 1, count))
 	}
 
 
