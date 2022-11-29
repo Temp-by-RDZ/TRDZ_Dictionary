@@ -4,17 +4,23 @@ import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.KEY_OPTIONS
 import com.trdz.dictionary.base_utility.KEY_THEME
+import com.trdz.dictionary.base_utility.di.ModuleMain.provideNavigation
+import com.trdz.dictionary.base_utility.showToast
+import com.trdz.dictionary.base_utility.stopToast
+import com.trdz.dictionary.model.RepositoryExecutor
+import javax.inject.Inject
 
-class MainActivity: AppCompatActivity(), Leader {
+class MainActivity: AppCompatActivity() {
 
 	//region Elements
 
-	private val navigation = Navigation(R.id.container_fragment_base)
-	private val executor = Executor()
+	@Inject lateinit var navigation: Navigation
 
 	//endregion
 
@@ -40,12 +46,13 @@ class MainActivity: AppCompatActivity(), Leader {
 
 	//region Base realization
 	override fun onDestroy() {
-		executor.stop()
+		stopToast()
 		super.onDestroy()
 	}
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
+		MyApp.instance.appComponent.inject(this)
 		themeSettings()
 		setContentView(R.layout.activity_main)
 		if (savedInstanceState == null) {
@@ -63,8 +70,5 @@ class MainActivity: AppCompatActivity(), Leader {
 	}
 
 	//endregion
-
-	override fun getNavigation() = navigation
-	override fun getExecutor() = executor
 
 }

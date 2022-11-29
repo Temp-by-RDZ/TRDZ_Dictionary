@@ -11,6 +11,8 @@ class MyApp: Application() {
 		lateinit var di: DI
 	}
 
+	lateinit var appComponent: Component
+
 	override fun onCreate() {
 		super.onCreate()
 		instance = this
@@ -18,6 +20,7 @@ class MyApp: Application() {
 			DIModule(this, instance)
 		}
 		RxJavaPlugins.setErrorHandler {/*None*/ }
+		appComponent = DaggerComponent.builder().build()
 	}
 
 }

@@ -4,16 +4,17 @@ import android.util.Log
 import com.trdz.dictionary.base_utility.IN_BASIS
 import com.trdz.dictionary.base_utility.IN_SERVER
 import com.trdz.dictionary.base_utility.IN_STORAGE
-import com.trdz.dictionary.model.data_source_basis.DataSourceBasis
-import com.trdz.dictionary.model.data_source_room.InternalStorage
-import com.trdz.dictionary.model.data_source_server.ServerRetrofit
 import io.reactivex.rxjava3.core.Single
 
-class RepositoryExecutor {
+class RepositoryExecutor(
+	private val internalStorage: InternalData,
+	private val dataBasis: ADataSource,
+	private val dataServer: ADataSource,
+	private val dataInternal: ADataSource,
+) {
 
+	private var currentData: MutableList<DataWord> = listOf<DataWord>().toMutableList()
 	private lateinit var dataSource: ADataSource
-	private lateinit var currentData: MutableList<DataWord>
-	private val internalStorage: InternalStorage = InternalStorage()
 
 	fun dataUpdate(data: MutableList<DataWord>) {
 		if (data.isEmpty()) {
@@ -24,9 +25,9 @@ class RepositoryExecutor {
 
 	fun setSource(index: Int) {
 		when (index) {
-			IN_BASIS -> dataSource = DataSourceBasis()
-			IN_STORAGE -> dataSource = InternalStorage()
-			IN_SERVER -> dataSource = ServerRetrofit()
+			IN_BASIS -> dataSource = dataBasis
+			IN_STORAGE -> dataSource = dataInternal
+			IN_SERVER -> dataSource = dataServer
 		}
 	}
 
