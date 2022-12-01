@@ -4,12 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.base_utility.EFFECT_RISE
-import com.trdz.dictionary.base_utility.di.ModuleMain.provideNavigation
 import com.trdz.dictionary.databinding.FragmentWindowStartBinding
 import com.trdz.dictionary.view.segment_users.WindowWordListImp
 import javax.inject.Inject
@@ -30,7 +28,8 @@ class WindowStart: Fragment() {
 		super.onAttach(context)
 	}
 
-	@Inject lateinit var navigation: Navigation
+	@Inject
+	lateinit var navigation: Navigation
 
 	//endregion
 

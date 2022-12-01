@@ -1,11 +1,12 @@
 package com.trdz.dictionary.model.data_source_server
 
 import com.trdz.dictionary.MyApp
-import com.trdz.dictionary.model.*
+import com.trdz.dictionary.model.ADataSource
+import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.ServersResult
 import com.trdz.dictionary.model.data_source_server.data_word.dto.WordsDTO
 import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
-import java.lang.Exception
 
 class ServerRetrofit: ADataSource {
 

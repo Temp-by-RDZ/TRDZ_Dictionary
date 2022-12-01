@@ -1,6 +1,5 @@
 package com.trdz.dictionary.base_utility.di
 
-import kotlin.collections.HashMap
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 

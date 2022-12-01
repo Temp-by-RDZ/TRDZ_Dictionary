@@ -1,7 +1,6 @@
 package com.trdz.dictionary.model
 
 import android.os.Parcelable
-import com.google.gson.annotations.SerializedName
 import com.trdz.dictionary.base_utility.TYPE_TITLE
 import kotlinx.parcelize.Parcelize
 

@@ -1,12 +1,9 @@
 package com.trdz.dictionary.base_utility.di
 
 import com.trdz.dictionary.model.ADataSource
-import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.model.InternalData
+import com.trdz.dictionary.model.Repository
 import com.trdz.dictionary.model.RepositoryExecutor
-import com.trdz.dictionary.model.data_source_basis.DataSourceBasis
-import com.trdz.dictionary.model.data_source_room.InternalStorage
-import com.trdz.dictionary.model.data_source_server.ServerRetrofit
 import com.trdz.dictionary.view_model.SingleLiveData
 import com.trdz.dictionary.view_model.StatusProcess
 import com.trdz.dictionary.view_model.ViewModelFactory
@@ -27,7 +24,7 @@ object ModuleViewModel {
 		dataServer: ADataSource,
 		@ModuleRepository.Internal
 		dataInternal: ADataSource,
-	): RepositoryExecutor {
+	): Repository {
 		return RepositoryExecutor(internalStorage, dataBasis, dataServer, dataInternal)
 	}
 
@@ -39,8 +36,8 @@ object ModuleViewModel {
 
 	@Provides
 	@Singleton
-	fun providesFactory(repository: RepositoryExecutor, dataLive: SingleLiveData<StatusProcess>): ViewModelFactory {
-		return ViewModelFactory(repository,dataLive)
+	fun providesFactory(repository: Repository, dataLive: SingleLiveData<StatusProcess>): ViewModelFactory {
+		return ViewModelFactory(repository, dataLive)
 	}
 
 }

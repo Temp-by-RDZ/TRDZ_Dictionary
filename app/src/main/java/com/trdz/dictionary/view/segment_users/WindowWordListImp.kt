@@ -9,7 +9,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.base_utility.hideKeyboard
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
@@ -44,7 +43,6 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	private val viewModel: MainViewModel by viewModels {
 		factory
 	}
-
 
 
 	//endregion
@@ -91,7 +89,8 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 				else {
 					binding.target.requestFocus()
 				}
-			}}
+			}
+		}
 	}
 	//endregion
 
@@ -103,7 +102,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 		viewModel.getSaved()
 	}
 
-	private fun basicRestore(list: List<DataWord>){
+	private fun basicRestore(list: List<DataWord>) {
 		//Не используется в методе востановления через VM
 	}
 
@@ -148,7 +147,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 				refresh(material.data.data)
 				loadingState(material.data.loadState)
 			}
-			is StatusProcess.Change -> changeState(material.data,material.position,material.count)
+			is StatusProcess.Change -> changeState(material.data, material.position, material.count)
 		}
 	}
 

@@ -1,9 +1,8 @@
 package com.trdz.dictionary.model.data_source_room.database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import androidx.room.ColumnInfo
-import com.trdz.dictionary.base_utility.TYPE_TITLE
 
 @Entity(tableName = "word")
 data class WordEntity(
@@ -16,7 +15,7 @@ data class WordEntity(
 	val iconUrl: String,
 	val type: Int,
 	val group: Int,
-	val search: String
+	val search: String,
 ) {
 	companion object {
 		const val PRIMARY_KEY = "index"

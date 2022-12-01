@@ -1,26 +1,22 @@
 package com.trdz.dictionary.view
 
-import android.app.Activity
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.KEY_OPTIONS
 import com.trdz.dictionary.base_utility.KEY_THEME
-import com.trdz.dictionary.base_utility.di.ModuleMain.provideNavigation
-import com.trdz.dictionary.base_utility.showToast
 import com.trdz.dictionary.base_utility.stopToast
-import com.trdz.dictionary.model.RepositoryExecutor
 import javax.inject.Inject
 
 class MainActivity: AppCompatActivity() {
 
 	//region Elements
 
-	@Inject lateinit var navigation: Navigation
+	@Inject
+	lateinit var navigation: Navigation
 
 	//endregion
 

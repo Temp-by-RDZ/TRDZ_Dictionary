@@ -23,7 +23,9 @@ object ResponseMapper {
 
 	fun fromStorage(entity: WordEntity): DataWord {
 		var state = 1
-		if (entity.type != TYPE_TITLE) {state =2}
+		if (entity.type != TYPE_TITLE) {
+			state = 2
+		}
 		return with(entity) {
 			DataWord(
 				id = id.toInt(),

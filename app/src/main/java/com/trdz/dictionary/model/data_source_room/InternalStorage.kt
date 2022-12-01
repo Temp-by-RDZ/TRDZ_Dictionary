@@ -1,13 +1,14 @@
 package com.trdz.dictionary.model.data_source_room
 
 import com.trdz.dictionary.MyApp
-import com.trdz.dictionary.model.*
+import com.trdz.dictionary.model.ADataSource
+import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.InternalData
+import com.trdz.dictionary.model.ServersResult
 import com.trdz.dictionary.model.data_source_room.database.WordDao
 import com.trdz.dictionary.model.data_source_room.database.WordEntity
 import io.reactivex.rxjava3.core.Completable
 import io.reactivex.rxjava3.core.Single
-import java.lang.Exception
-import kotlin.concurrent.thread
 
 class InternalStorage: ADataSource, InternalData {
 
@@ -16,19 +17,17 @@ class InternalStorage: ADataSource, InternalData {
 	}
 
 	override fun saveWords(words: List<DataWord>, search: String): Completable = Completable.create {
-		thread {
-			try {
-				val wordsList: MutableList<WordEntity> = emptyList<WordEntity>().toMutableList()
-				words.forEach { user ->
-					wordsList.add(ResponseMapper.toStorage(user, search))
-				}
-				getData().saveWord(wordsList.toList())
-				it.onComplete()
+		try {
+			val wordsList: MutableList<WordEntity> = emptyList<WordEntity>().toMutableList()
+			words.forEach { user ->
+				wordsList.add(ResponseMapper.toStorage(user, search))
 			}
-			catch (e: Exception) {
-				it.onError(Throwable(e.message))
-			}
-		}.start()
+			getData().saveWord(wordsList.toList())
+			it.onComplete()
+		}
+		catch (e: Exception) {
+			it.onError(Throwable(e.message))
+		}
 
 	}
 
