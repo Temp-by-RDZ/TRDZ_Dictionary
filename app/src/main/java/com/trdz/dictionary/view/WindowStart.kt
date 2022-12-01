@@ -3,6 +3,7 @@ package com.trdz.dictionary.view
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.trdz.dictionary.base_utility.EFFECT_RISE
@@ -40,7 +41,11 @@ class WindowStart: Fragment() {
 		binding.firstView.animate().apply {
 			alpha(0.0f)
 			duration = 2900L
-			withEndAction { requireActivity().supportFragmentManager.beginTransaction().detach(this@WindowStart).commit() }
+			withEndAction {
+				if (this@WindowStart.isAdded) {
+					requireActivity().supportFragmentManager.beginTransaction().detach(this@WindowStart).commit()
+				}
+			}
 			start()
 		}
 		createMainWindow()
