@@ -1,6 +1,5 @@
 package com.trdz.dictionary.view.segment_users
 
-import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,14 +8,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.base_utility.hideKeyboard
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
 import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.view_model.MainViewModel
 import com.trdz.dictionary.view_model.StatusProcess
 import com.trdz.dictionary.view_model.ViewModelFactory
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 
 class WindowWordListImp: Fragment(), WindowWordListOnClick {
@@ -26,19 +24,12 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	private var _binding: FragmentNavigationBinding? = null
 	private val binding get() = _binding!!
 	private val adapter = WindowWordListRecycle(this)
-	//private val viewModel: MainViewModel by lazy  { ViewModelProvider(this).get(MainViewModel::class.java)}
 
 	//endregion
 
 	//region Injected
 
-	@Inject
-	lateinit var factory: ViewModelFactory
-
-	override fun onAttach(context: Context) {
-		MyApp.instance.appComponent.inject(this)
-		super.onAttach(context)
-	}
+	private val factory: ViewModelFactory by inject()
 
 	private val viewModel: MainViewModel by viewModels {
 		factory

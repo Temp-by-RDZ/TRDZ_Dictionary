@@ -3,6 +3,7 @@ package com.trdz.dictionary
 import android.app.Application
 import com.trdz.dictionary.base_utility.di.*
 import io.reactivex.rxjava3.plugins.RxJavaPlugins
+import org.koin.core.context.startKoin
 
 class MyApp: Application() {
 
@@ -11,8 +12,6 @@ class MyApp: Application() {
 		lateinit var di: DI
 	}
 
-	lateinit var appComponent: Component
-
 	override fun onCreate() {
 		super.onCreate()
 		instance = this
@@ -20,7 +19,9 @@ class MyApp: Application() {
 			DIModule(this, instance)
 		}
 		RxJavaPlugins.setErrorHandler {/*None*/ }
-		appComponent = DaggerComponent.builder().build()
+		startKoin {
+			modules(listOf(moduleMainK, moduleRepositoryK, moduleViewModelK))
+		}
 	}
 
 }

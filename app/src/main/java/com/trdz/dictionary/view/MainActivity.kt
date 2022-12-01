@@ -9,14 +9,17 @@ import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.KEY_OPTIONS
 import com.trdz.dictionary.base_utility.KEY_THEME
 import com.trdz.dictionary.base_utility.stopToast
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class MainActivity: AppCompatActivity() {
 
 	//region Elements
 
-	@Inject
-	lateinit var navigation: Navigation
+	//endregion
+
+	//region Injected
+	
+	private val navigation: Navigation by inject()
 
 	//endregion
 
@@ -48,7 +51,6 @@ class MainActivity: AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		MyApp.instance.appComponent.inject(this)
 		themeSettings()
 		setContentView(R.layout.activity_main)
 		if (savedInstanceState == null) {

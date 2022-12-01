@@ -1,45 +1,24 @@
 package com.trdz.dictionary.base_utility.di
 
-import com.trdz.dictionary.model.ADataSource
-import com.trdz.dictionary.model.InternalData
+import com.trdz.dictionary.base_utility.KK_BASIS
+import com.trdz.dictionary.base_utility.KK_INTERNAL
+import com.trdz.dictionary.base_utility.KK_SERVER
 import com.trdz.dictionary.model.Repository
 import com.trdz.dictionary.model.RepositoryExecutor
 import com.trdz.dictionary.view_model.SingleLiveData
 import com.trdz.dictionary.view_model.StatusProcess
 import com.trdz.dictionary.view_model.ViewModelFactory
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Module
-object ModuleViewModel {
-
-	@Provides
-	@Singleton
-	fun provideRepository(
-		internalStorage: InternalData,
-		@ModuleRepository.Basis
-		dataBasis: ADataSource,
-		@ModuleRepository.Server
-		dataServer: ADataSource,
-		@ModuleRepository.Internal
-		dataInternal: ADataSource,
-	): Repository {
-		return RepositoryExecutor(internalStorage, dataBasis, dataServer, dataInternal)
-	}
-
-	@Provides
-	@Singleton
-	fun provideLiveData(): SingleLiveData<StatusProcess> {
-		return SingleLiveData()
-	}
-
-	@Provides
-	@Singleton
-	fun providesFactory(repository: Repository, dataLive: SingleLiveData<StatusProcess>): ViewModelFactory {
-		return ViewModelFactory(repository, dataLive)
-	}
-
+val moduleViewModelK = module {
+	single<Repository>() { RepositoryExecutor(
+		internalStorage = get() ,
+		dataBasis = get(named(KK_BASIS)),
+		dataServer = get(named(KK_SERVER)),
+		dataInternal = get(named(KK_INTERNAL))) }
+	single<SingleLiveData<StatusProcess>>() { SingleLiveData() }
+	single<ViewModelFactory>() { ViewModelFactory(repository = get(), dataLive = get()) }
 }
 
 

@@ -1,53 +1,22 @@
 package com.trdz.dictionary.base_utility.di
 
+import com.trdz.dictionary.base_utility.KK_BASIS
+import com.trdz.dictionary.base_utility.KK_INTERNAL
+import com.trdz.dictionary.base_utility.KK_SERVER
 import com.trdz.dictionary.model.ADataSource
 import com.trdz.dictionary.model.InternalData
 import com.trdz.dictionary.model.data_source_basis.DataSourceBasis
 import com.trdz.dictionary.model.data_source_room.InternalStorage
 import com.trdz.dictionary.model.data_source_server.ServerRetrofit
-import dagger.Module
-import dagger.Provides
-import javax.inject.Qualifier
-import javax.inject.Singleton
+import org.koin.core.qualifier.named
+import org.koin.dsl.module
 
-@Module
-object ModuleRepository {
 
-	@Provides
-	@Singleton
-	fun provideInternalStorage(): InternalData {
-		return InternalStorage()
-	}
-
-	@Provides
-	@Singleton
-	@Basis
-	fun provideDataBasis(): ADataSource {
-		return DataSourceBasis()
-	}
-
-	@Provides
-	@Singleton
-	@Server
-	fun provideDataServer(): ADataSource {
-		return ServerRetrofit()
-	}
-
-	@Provides
-	@Singleton
-	@Internal
-	fun provideDataInternal(): ADataSource {
-		return InternalStorage()
-	}
-
-	@Qualifier
-	annotation class Basis
-
-	@Qualifier
-	annotation class Server
-
-	@Qualifier
-	annotation class Internal
+val moduleRepositoryK = module {
+	single<InternalData>() { InternalStorage() }
+	single<ADataSource>(named(KK_BASIS)) { DataSourceBasis() }
+	single<ADataSource>(named(KK_SERVER)) { ServerRetrofit() }
+	single<ADataSource>(named(KK_INTERNAL)) { InternalStorage() }
 }
 
 

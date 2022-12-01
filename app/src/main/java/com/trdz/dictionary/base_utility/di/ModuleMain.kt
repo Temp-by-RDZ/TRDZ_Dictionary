@@ -2,19 +2,10 @@ package com.trdz.dictionary.base_utility.di
 
 import com.trdz.dictionary.R
 import com.trdz.dictionary.view.Navigation
-import dagger.Module
-import dagger.Provides
-import javax.inject.Singleton
+import org.koin.dsl.module
 
-@Module
-object ModuleMain {
-
-	@Provides
-	@Singleton
-	fun provideNavigation(): Navigation {
-		return Navigation(R.id.container_fragment_base)
-	}
-
+val moduleMainK = module {
+	single<Navigation>() { Navigation(R.id.container_fragment_base) }
 }
 
 

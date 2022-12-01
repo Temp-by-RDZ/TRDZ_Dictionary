@@ -1,16 +1,14 @@
 package com.trdz.dictionary.view
 
-import android.content.Context
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.*
 import androidx.fragment.app.Fragment
-import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.base_utility.EFFECT_RISE
 import com.trdz.dictionary.databinding.FragmentWindowStartBinding
 import com.trdz.dictionary.view.segment_users.WindowWordListImp
-import javax.inject.Inject
+import org.koin.android.ext.android.inject
 
 class WindowStart: Fragment() {
 
@@ -23,13 +21,7 @@ class WindowStart: Fragment() {
 
 	//region Injected
 
-	override fun onAttach(context: Context) {
-		MyApp.instance.appComponent.inject(this)
-		super.onAttach(context)
-	}
-
-	@Inject
-	lateinit var navigation: Navigation
+	private val navigation: Navigation by inject()
 
 	//endregion
 
