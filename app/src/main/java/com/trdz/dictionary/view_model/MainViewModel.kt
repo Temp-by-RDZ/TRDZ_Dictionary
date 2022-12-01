@@ -8,58 +8,76 @@ import com.trdz.dictionary.base_utility.IN_SERVER
 import com.trdz.dictionary.base_utility.IN_STORAGE
 import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.model.Repository
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
-import io.reactivex.rxjava3.disposables.CompositeDisposable
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.trdz.dictionary.model.RequestResults
+import kotlinx.coroutines.*
 
 class MainViewModel(
 	private val repository: Repository,
 	private val dataLive: SingleLiveData<StatusProcess>,
 ): ViewModel() {
 
+	private val scope = CoroutineScope(
+		Dispatchers.IO
+				+ SupervisorJob()
+				+ CoroutineExceptionHandler { _, throwable ->
+			handleError(throwable)
+		})
+
+	private fun handleError(throwable: Throwable) {
+		Log.w("@@@", "Prs - Coroutine dead $throwable")
+	}
+
+	private var jobs : Job? = null
+
 	fun getPodData(): LiveData<StatusProcess> = dataLive
-	private val disposables: CompositeDisposable by lazy { CompositeDisposable() }
 
 	fun startSearch(target: String) {
 		Log.d("@@@", "Prs - Start loading")
+		jobs?.cancel()
 		with(dataLive) {
 			postValue(StatusProcess.Loading)
 			repository.setSource(IN_STORAGE)
-			disposables.add(repository.getInitList(target)
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(
-					{
+			jobs = scope.launch {
+				when (val response = repository.getInitList(target)) {
+					is RequestResults.Success -> {
 						Log.d("@@@", "Prs - Internal load complete")
-						val result = it.dataWord!!
+						val result = response.data.dataWord!!
 						repository.dataUpdate(result.toMutableList())
 						postValue(StatusProcess.Success(ModelResult(repository.getList())))
-					},
-					{
-						Log.w("@@@", "Prs - Failed internal load start external loading $it")
+
+					}
+					is RequestResults.Error -> {
+						Log.w("@@@", "Prs - Failed internal load start external loading ${response.error}")
 						startLoad(target)
-					}))
+					}
+				}
+			}
+				//.subscribeOn(Schedulers.io())
+				//.observeOn(AndroidSchedulers.mainThread())
 		}
 	}
 
 	private fun startLoad(target: String) {
+		jobs?.cancel()
 		with(dataLive) {
+			postValue(StatusProcess.Loading)
 			repository.setSource(IN_SERVER)
-			disposables.add(repository.getInitList(target)
-				.subscribeOn(Schedulers.io())
-				.observeOn(AndroidSchedulers.mainThread())
-				.subscribe(
-					{
+			jobs = scope.launch {
+				when (val response = repository.getInitList(target)) {
+					is RequestResults.Success -> {
 						Log.d("@@@", "Prs - External load complete")
-						val result = it.dataWord!!
+						val result = response.data.dataWord!!
 						repository.dataUpdate(result.toMutableList())
-						disposables.add(repository.update(target))
+						repository.update(target)
 						postValue(StatusProcess.Success(ModelResult(repository.getList())))
-					},
-					{
-						Log.e("@@@", "Prs - Loading failed $it")
-						postValue(StatusProcess.Error(-2, it))
-					}))
+
+					}
+					is RequestResults.Error -> {
+						Log.e("@@@", "Prs - Loading failed ${response.error}")
+						postValue(StatusProcess.Error(-2, response.error))
+					}
+				}
+			}
 		}
 	}
 
@@ -78,7 +96,6 @@ class MainViewModel(
 	}
 
 	override fun onCleared() {
-		disposables.clear()
 		super.onCleared()
 	}
 }

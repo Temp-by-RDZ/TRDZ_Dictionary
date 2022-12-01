@@ -4,9 +4,6 @@ import android.util.Log
 import com.trdz.dictionary.base_utility.IN_BASIS
 import com.trdz.dictionary.base_utility.IN_SERVER
 import com.trdz.dictionary.base_utility.IN_STORAGE
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.disposables.Disposable
-import io.reactivex.rxjava3.schedulers.Schedulers
 
 class RepositoryExecutor(
 	private val internalStorage: InternalData,
@@ -27,8 +24,7 @@ class RepositoryExecutor(
 			IN_SERVER -> dataSource = dataServer
 		}
 	}
-
-	override fun getInitList(target: String): Single<ServersResult> {
+	override suspend fun getInitList(target: String): RequestResults {
 		return dataSource.loadWords(target)
 	}
 
@@ -39,15 +35,9 @@ class RepositoryExecutor(
 		currentData = data
 	}
 
-	override fun update(target: String): Disposable {
+	override fun update(target: String) {
 		Log.d("@@@", "Rep - User Saving...")
-		return internalStorage.saveWords(currentData, target)
-			.subscribeOn(Schedulers.io())
-			.subscribe({
-				Log.d("@@@", "Rep - ...Done")
-			}, {
-				Log.d("@@@", "Rep - ...Failed $it")
-			})
+		internalStorage.saveWords(currentData, target)
 	}
 
 	//endregion

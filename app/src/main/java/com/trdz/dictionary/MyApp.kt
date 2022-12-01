@@ -2,7 +2,6 @@ package com.trdz.dictionary
 
 import android.app.Application
 import com.trdz.dictionary.base_utility.di.*
-import io.reactivex.rxjava3.plugins.RxJavaPlugins
 import org.koin.core.context.startKoin
 
 class MyApp: Application() {
@@ -18,7 +17,6 @@ class MyApp: Application() {
 		di = DIImpl().apply {
 			DIModule(this, instance)
 		}
-		RxJavaPlugins.setErrorHandler {/*None*/ }
 		startKoin {
 			modules(listOf(moduleMainK, moduleRepositoryK, moduleViewModelK))
 		}

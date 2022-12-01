@@ -4,7 +4,6 @@ import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.KEY_OPTIONS
 import com.trdz.dictionary.base_utility.KEY_THEME
@@ -18,7 +17,7 @@ class MainActivity: AppCompatActivity() {
 	//endregion
 
 	//region Injected
-	
+
 	private val navigation: Navigation by inject()
 
 	//endregion

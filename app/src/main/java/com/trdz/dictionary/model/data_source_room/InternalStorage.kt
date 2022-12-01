@@ -1,14 +1,10 @@
 package com.trdz.dictionary.model.data_source_room
 
+import android.util.Log
 import com.trdz.dictionary.MyApp
-import com.trdz.dictionary.model.ADataSource
-import com.trdz.dictionary.model.DataWord
-import com.trdz.dictionary.model.InternalData
-import com.trdz.dictionary.model.ServersResult
+import com.trdz.dictionary.model.*
 import com.trdz.dictionary.model.data_source_room.database.WordDao
 import com.trdz.dictionary.model.data_source_room.database.WordEntity
-import io.reactivex.rxjava3.core.Completable
-import io.reactivex.rxjava3.core.Single
 
 class InternalStorage: ADataSource, InternalData {
 
@@ -16,29 +12,29 @@ class InternalStorage: ADataSource, InternalData {
 		return MyApp.di.get(WordDao::class)
 	}
 
-	override fun saveWords(words: List<DataWord>, search: String): Completable = Completable.create {
+	override fun saveWords(words: List<DataWord>, search: String) {
 		try {
 			val wordsList: MutableList<WordEntity> = emptyList<WordEntity>().toMutableList()
 			words.forEach { user ->
 				wordsList.add(ResponseMapper.toStorage(user, search))
 			}
 			getData().saveWord(wordsList.toList())
-			it.onComplete()
+			Log.d("@@@", "Rep - ...Done")
 		}
 		catch (e: Exception) {
-			it.onError(Throwable(e.message))
+			Log.d("@@@", "Rep - ...Failed ${e.message}")
 		}
 
 	}
 
-	override fun loadWords(target: String): Single<ServersResult> = Single.create {
-		try {
+	override fun loadWords(target: String): RequestResults {
+		return try {
 			val response = getData().getWords(target)
-			if (response.isEmpty()) it.onError(responseEmpty())
-			else it.onSuccess(responseFormation(response))
+			if (response.isEmpty()) RequestResults.Error(404,responseEmpty())
+			else RequestResults.Success(responseFormation(response))
 		}
 		catch (error: Exception) {
-			it.onError(responseFail(error))
+			RequestResults.Error(-1,responseFail(error))
 		}
 	}
 

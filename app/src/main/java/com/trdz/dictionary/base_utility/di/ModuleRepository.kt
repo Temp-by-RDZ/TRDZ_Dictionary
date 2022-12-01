@@ -11,7 +11,6 @@ import com.trdz.dictionary.model.data_source_server.ServerRetrofit
 import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
-
 val moduleRepositoryK = module {
 	single<InternalData>() { InternalStorage() }
 	single<ADataSource>(named(KK_BASIS)) { DataSourceBasis() }

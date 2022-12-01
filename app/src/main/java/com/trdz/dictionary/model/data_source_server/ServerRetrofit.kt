@@ -3,21 +3,21 @@ package com.trdz.dictionary.model.data_source_server
 import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.model.ADataSource
 import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.RequestResults
 import com.trdz.dictionary.model.ServersResult
 import com.trdz.dictionary.model.data_source_server.data_word.dto.WordsDTO
-import io.reactivex.rxjava3.core.Single
 import retrofit2.Response
 
 class ServerRetrofit: ADataSource {
 
-	override fun loadWords(target: String): Single<ServersResult> = Single.create {
+	override fun loadWords(target: String): RequestResults {
 		val retrofit = MyApp.di.get(ServerRetrofitApi::class)
-		try {
+		return try {
 			val response = retrofit.getResponse(target).execute()
-			it.onSuccess(responseFormation(response))
+			RequestResults.Success(responseFormation(response))
 		}
 		catch (error: Exception) {
-			it.onError(responseFail(error))
+			RequestResults.Error(-1,responseFail(error))
 		}
 	}
 

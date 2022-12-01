@@ -1,7 +1,6 @@
 package com.trdz.dictionary.model.data_source_room.database
 
 import androidx.room.*
-import io.reactivex.rxjava3.core.Completable
 
 @Dao
 interface WordDao {
@@ -14,5 +13,5 @@ interface WordDao {
 	abstract fun getWords(search: String): List<WordEntity>
 
 	@Delete
-	abstract fun delete(wordsDBObject: WordEntity): Completable
+	abstract fun delete(wordsDBObject: WordEntity)
 }

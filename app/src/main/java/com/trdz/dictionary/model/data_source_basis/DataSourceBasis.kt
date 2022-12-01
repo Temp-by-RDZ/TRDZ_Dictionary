@@ -4,8 +4,8 @@ import com.trdz.dictionary.base_utility.TYPE_CARD
 import com.trdz.dictionary.base_utility.TYPE_TITLE
 import com.trdz.dictionary.model.ADataSource
 import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.RequestResults
 import com.trdz.dictionary.model.ServersResult
-import io.reactivex.rxjava3.core.Single
 
 class DataSourceBasis: ADataSource {
 
@@ -17,9 +17,6 @@ class DataSourceBasis: ADataSource {
 		DataWord(name = "Подключится", subName = "", id = 0, type = TYPE_CARD, iconUrl = "", group = 2),
 	)
 
-	override fun loadWords(target: String): Single<ServersResult> = Single.create {
-		it.onSuccess(ServersResult(0, basisData))
-	}
-
+	override fun loadWords(target: String): RequestResults = RequestResults.Success(ServersResult(0, basisData))
 
 }
