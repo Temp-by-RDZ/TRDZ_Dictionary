@@ -31,6 +31,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/list_margin"
+            android:layout_marginRight="@dimen/list_margin"
+            android:layout_marginBottom="?actionBarSize"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
         <FrameLayout
             android:id="@+id/loadingLayout"
             android:layout_width="match_parent"
@@ -46,14 +55,6 @@
                 android:layout_gravity="center" />
         </FrameLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/list_margin"
-            android:layout_marginRight="@dimen/list_margin"
-            android:layout_marginBottom="?actionBarSize"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
     </FrameLayout>
 
 </LinearLayout>

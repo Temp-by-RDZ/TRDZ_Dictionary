@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -15,6 +16,13 @@ import com.trdz.dictionary.view_model.MainViewModel
 import com.trdz.dictionary.view_model.StatusProcess
 import com.trdz.dictionary.view_model.ViewModelFactory
 import org.koin.android.ext.android.inject
+import android.app.Activity
+import android.content.Context
+import android.view.inputmethod.InputMethodManager
+import androidx.core.content.ContextCompat
+import androidx.core.content.ContextCompat.getSystemService
+import android.view.View.OnFocusChangeListener
+import com.trdz.dictionary.R
 
 
 class WindowWordListImp: Fragment(), WindowWordListOnClick {
@@ -70,17 +78,34 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 				}
 			}
 			list.recyclerView.adapter = adapter
-			target.requestFocus()
-			floatButton.setOnClickListener {
-				val text = binding.target.text.toString()
-				if ((text != "") && (text != " ")) {
-					viewModel.startSearch(text)
-					hideKeyboard()
-				}
-				else {
-					binding.target.requestFocus()
-				}
+			disabler.setOnClickListener {
+				hideKeyboard()
+				enabler.visibility = View.VISIBLE
+				it.visibility = View.GONE
+				target.clearFocus()
 			}
+			enabler.setOnClickListener {
+				val memory = target.query
+				target.isIconified = true
+				disabler.visibility = View.VISIBLE
+				it.visibility = View.GONE
+				target.isIconified = false
+				target.requestFocus()
+				target.setQuery(memory,false)
+			}
+			target.isIconified = false
+			target.setOnCloseListener {true}
+			target.setOnQueryTextListener( object : SearchView.OnQueryTextListener {
+				override fun onQueryTextSubmit(query: String?): Boolean {
+					query?.let { viewModel.setSearch(it) }
+					return true
+				}
+
+				override fun onQueryTextChange(newText: String): Boolean {
+					viewModel.setSearch(newText)
+					return true
+				}
+			})
 		}
 	}
 	//endregion
@@ -135,8 +160,10 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 			StatusProcess.Loading -> loadingState(true)
 			is StatusProcess.Error -> errorCatch()
 			is StatusProcess.Success -> {
-				refresh(material.data.data)
-				loadingState(material.data.loadState)
+				with(material.data) {
+					refresh(data)
+					if (data.isNotEmpty()) loadingState(loadState)
+				}
 			}
 			is StatusProcess.Change -> changeState(material.data, material.position, material.count)
 		}
@@ -157,8 +184,14 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	}
 
 	private fun loadingState(state: Boolean) {
-		if (state) binding.list.loadingLayout.visibility = View.VISIBLE
-		else binding.list.loadingLayout.visibility = View.INVISIBLE
+		if (state) {
+			binding.list.naming.text = getString(R.string.word_list_alter)
+			binding.list.loadingLayout.visibility = View.VISIBLE
+		}
+		else {
+			binding.list.naming.text = getString(R.string.word_list_title)
+			binding.list.loadingLayout.visibility = View.INVISIBLE
+		}
 	}
 
 	//endregion

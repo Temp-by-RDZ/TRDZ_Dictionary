@@ -2,7 +2,6 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/motion_picture"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -12,6 +11,13 @@
         layout="@layout/preset_words_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clickable="true"
+        android:focusable="true"
+        android:id="@+id/disabler"/>
 
     <View
         android:layout_width="match_parent"
@@ -31,7 +37,7 @@
 
     <androidx.cardview.widget.CardView
         android:layout_marginStart="@dimen/search_margin_s"
-        android:layout_marginEnd="@dimen/search_margin_e"
+        android:layout_marginEnd="@dimen/search_margin_s"
         android:layout_marginBottom="@dimen/search_margin_b"
         android:layout_width="match_parent"
         android:layout_gravity="bottom"
@@ -39,7 +45,7 @@
         app:strokeColor="@color/black"
         app:cardCornerRadius="@dimen/lider_line_corner_size"
         app:strokeWidth="@dimen/lider_line_corner_width">
-        <EditText
+        <androidx.appcompat.widget.SearchView
             android:id="@+id/target"
             android:layout_marginStart="15dp"
             android:layout_marginEnd="15dp"
@@ -47,17 +53,14 @@
             android:layout_height="match_parent"
             android:hint="@string/hint_help"/>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clickable="true"
+            android:visibility="gone"
+            android:id="@+id/enabler"
+            android:focusable="true" />
     </androidx.cardview.widget.CardView>
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/float_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="?colorOnPrimary"
-        app:borderWidth="@dimen/float_button_border"
-        app:layout_anchor="@id/bottom_app_bar"
-        app:srcCompat="@drawable/ic_baseline_search_24"
-        tools:ignore="ContentDescription" />
 
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

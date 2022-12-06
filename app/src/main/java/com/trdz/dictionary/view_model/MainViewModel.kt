@@ -10,6 +10,7 @@ import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.model.Repository
 import com.trdz.dictionary.model.RequestResults
 import kotlinx.coroutines.*
+import kotlinx.coroutines.flow.*
 
 class MainViewModel(
 	private val repository: Repository,
@@ -27,11 +28,29 @@ class MainViewModel(
 		Log.w("@@@", "Prs - Coroutine dead $throwable")
 	}
 
-	private var jobs : Job? = null
+	private var jobs: Job? = null
+
+	private val querySearch = MutableStateFlow("")
+	init {
+		CoroutineScope(Dispatchers.Main).launch {
+			querySearch.debounce(500)
+				.filter { query -> return@filter query.isNotEmpty() }
+				.distinctUntilChanged()
+				.collect { result -> startSearch(result) }
+		}
+	}
+	private fun dataFromNetwork(query: String): Flow<String> {
+		return flow {
+			emit(query)
+		}
+	}
+	fun setSearch(search: String) {
+		querySearch.value = search
+	}
 
 	fun getPodData(): LiveData<StatusProcess> = dataLive
 
-	fun startSearch(target: String) {
+	private fun startSearch(target: String) {
 		Log.d("@@@", "Prs - Start loading")
 		jobs?.cancel()
 		with(dataLive) {
@@ -52,8 +71,6 @@ class MainViewModel(
 					}
 				}
 			}
-				//.subscribeOn(Schedulers.io())
-				//.observeOn(AndroidSchedulers.mainThread())
 		}
 	}
 
