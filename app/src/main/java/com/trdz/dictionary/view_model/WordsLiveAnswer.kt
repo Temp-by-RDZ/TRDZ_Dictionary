@@ -9,6 +9,7 @@ sealed class StatusProcess {
 	data class Error(val code: Int, val error: Throwable): StatusProcess()
 
 	//Специфические команды
+	data class ForceSet(val data: String): StatusProcess()
 	data class Change(val data: List<DataWord>, val position: Int, val count: Int): StatusProcess()
 }
 

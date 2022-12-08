@@ -12,9 +12,6 @@ interface WordDao {
 	abstract fun saveFavor(favor: List<EntityFavor>)
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
-	abstract fun saveSearch(search: List<EntitySearch>)
-
-	@Insert(onConflict = OnConflictStrategy.REPLACE)
 	abstract fun addFavor(favor: EntityFavor)
 
 	@Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -33,5 +30,14 @@ interface WordDao {
 	abstract fun getSearch(): List<EntitySearch>
 
 	@Delete
+	abstract fun deleteFavor(favor: EntityFavor)
+
+	@Delete
 	abstract fun delete(wordsDBObject: EntityWord)
+
+	@Query("DELETE FROM favor")
+	abstract fun clearFavor()
+
+	@Query("DELETE FROM search")
+	abstract fun clearHistory()
 }

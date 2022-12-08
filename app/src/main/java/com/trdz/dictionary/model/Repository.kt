@@ -2,12 +2,20 @@ package com.trdz.dictionary.model
 
 interface Repository {
 	fun setSource(index: Int)
+	fun checkLast(): String
+
 	//Data Word
 	suspend fun initWordList(target: String): RequestResults
-	fun update(currentData: List<DataWord>,target: String)
+	suspend fun analyze(data: List<DataWord>): List<DataWord>
+	fun update(currentData: List<DataWord>, target: String)
+
 	//Data Favor
 	suspend fun initFavorList(): List<DataLine>
+	fun update(list: List<DataLine>)
 	fun addFavorite(data: DataLine)
 	fun removeFavorite(data: DataLine)
+
 	//Data Search
+	suspend fun initSearchList(): List<DataLine>
+	fun update(target: String)
 }

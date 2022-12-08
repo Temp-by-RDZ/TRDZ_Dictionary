@@ -5,6 +5,7 @@ import com.trdz.dictionary.model.DataLine
 import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.model.VisualState
 import com.trdz.dictionary.model.data_source_room.database.EntityFavor
+import com.trdz.dictionary.model.data_source_room.database.EntitySearch
 import com.trdz.dictionary.model.data_source_room.database.EntityWord
 
 object ResponseMapper {
@@ -58,6 +59,24 @@ object ResponseMapper {
 			DataLine(
 				id = id,
 				name = name,
+			)
+		}
+	}
+
+	fun toStorageSearch(data: DataLine): EntitySearch {
+		return with(data) {
+			EntitySearch(
+				id = id,
+				search = name,
+			)
+		}
+	}
+
+	fun fromStorage(entity: EntitySearch): DataLine {
+		return with(entity) {
+			DataLine(
+				id = id,
+				name = search,
 			)
 		}
 	}

@@ -91,7 +91,7 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 				if (data.visual.expand) {
 					secondBox.visibility = View.VISIBLE
 					pic.setBackgroundResource(R.drawable.plaseholder)
-					pic.load("https:"+data.iconUrl) {
+					pic.load("https:" + data.iconUrl) {
 						listener(
 							onSuccess = { _, _ ->
 								Log.d("@@@", "App - Load comp")
@@ -114,7 +114,8 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 				subExpand(data)
 				root.setOnClickListener {
 					data.visual.expand = !data.visual.expand
-					subExpand(data) }
+					subExpand(data)
+				}
 				val sb = StringBuilder(data.name)
 				if (data.subName != "") {
 					sb.append(" (")
@@ -153,7 +154,8 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 				favorZone.setOnClickListener {
 					data.visual.expand = !data.visual.expand
 					subExpand(data)
-					clickExecutor.onItemClick(data, layoutPosition,data.visual.expand)}
+					clickExecutor.onItemClick(data, layoutPosition, data.visual.expand)
+				}
 			}
 		}
 	}

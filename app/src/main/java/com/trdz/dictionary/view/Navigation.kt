@@ -30,23 +30,23 @@ class Navigation(private var fastContainer: Int = 0) {
 					R.anim.slide_in,
 					R.anim.slide_out,
 				)
-				EFFECT_DROP  ->setCustomAnimations(
+				EFFECT_DROP -> setCustomAnimations(
 					R.anim.move_from_up,
 					R.anim.fade_out,
 				)
-				EFFECT_MOVED ->setCustomAnimations(
+				EFFECT_MOVED -> setCustomAnimations(
 					R.anim.move_from_up,
 					R.anim.slide_down,
 				)
-				EFFECT_MOVEL ->setCustomAnimations(
+				EFFECT_MOVEL -> setCustomAnimations(
 					R.anim.slide_in,
 					R.anim.move_to_left,
 				)
-				EFFECT_MOVER ->setCustomAnimations(
+				EFFECT_MOVER -> setCustomAnimations(
 					R.anim.move_from_left,
 					R.anim.slide_out,
 				)
-				EFFECT_MOVEU ->setCustomAnimations(
+				EFFECT_MOVEU -> setCustomAnimations(
 					R.anim.slide_up,
 					R.anim.move_to_up,
 				)
@@ -73,23 +73,27 @@ class Navigation(private var fastContainer: Int = 0) {
 					R.anim.slide_in,
 					R.anim.slide_out,
 				)
-				EFFECT_DROP  ->setCustomAnimations(
+				EFFECT_DROP -> setCustomAnimations(
 					R.anim.move_from_up,
 					R.anim.fade_out,
 				)
-				EFFECT_MOVED ->setCustomAnimations(
+				EFFECT_SHOW -> setCustomAnimations(
+					R.anim.fade_in,
+					R.anim.move_to_up,
+				)
+				EFFECT_MOVED -> setCustomAnimations(
 					R.anim.move_from_up,
 					R.anim.slide_down,
 				)
-				EFFECT_MOVEL ->setCustomAnimations(
+				EFFECT_MOVEL -> setCustomAnimations(
 					R.anim.slide_in,
 					R.anim.move_to_left,
 				)
-				EFFECT_MOVER ->setCustomAnimations(
+				EFFECT_MOVER -> setCustomAnimations(
 					R.anim.move_from_left,
 					R.anim.slide_out,
 				)
-				EFFECT_MOVEU ->setCustomAnimations(
+				EFFECT_MOVEU -> setCustomAnimations(
 					R.anim.slide_up,
 					R.anim.move_to_up,
 				)

@@ -12,6 +12,7 @@ class RepositoryExecutor(
 	private val dataInternal: ADataSource,
 ): Repository {
 
+	private var lastSearch: String = ""
 	private lateinit var dataSource: ADataSource
 
 	override fun setSource(index: Int) {
@@ -22,15 +23,32 @@ class RepositoryExecutor(
 		}
 	}
 
+	override fun checkLast() = lastSearch
+
+
 	//region Word Data update
 
 	override suspend fun initWordList(target: String): RequestResults {
+		lastSearch = target
 		return dataSource.loadWords(target)
 	}
 
-	override fun update(currentData: List<DataWord>,target: String) {
-		Log.d("@@@", "Rep - User Saving...")
+	override fun update(currentData: List<DataWord>, target: String) {
+		Log.d("@@@", "Rep - Words Saving...")
 		internalStorage.saveWords(currentData, target)
+		update(target)
+	}
+
+	override suspend fun analyze(data: List<DataWord>): List<DataWord> {
+		val favors = initFavorList()
+		data.forEachIndexed { index, elem ->
+			favors.forEach { favor ->
+				if (favor.name == elem.name) {
+					data[index].visual.expand = true
+				}
+			}
+		}
+		return data
 	}
 
 	//endregion
@@ -41,6 +59,11 @@ class RepositoryExecutor(
 		return internalStorage.loadFavor()
 	}
 
+	override fun update(list: List<DataLine>) {
+		Log.d("@@@", "Rep - Favor Saving...")
+		internalStorage.saveFavor(list)
+	}
+
 	override fun addFavorite(data: DataLine) {
 		Log.d("@@@", "Rep - Adding favorite...")
 		internalStorage.addFavorite(data)
@@ -49,6 +72,19 @@ class RepositoryExecutor(
 	override fun removeFavorite(data: DataLine) {
 		Log.d("@@@", "Rep - Remove favorite...")
 		internalStorage.removeFavorite(data)
+	}
+
+	//endregion
+
+	//region History Data update
+
+	override suspend fun initSearchList(): List<DataLine> {
+		return internalStorage.loadHistory()
+	}
+
+	override fun update(target: String) {
+		Log.d("@@@", "Rep - Search Saving...")
+		internalStorage.saveHistory(DataLine(0, target))
 	}
 
 	//endregion

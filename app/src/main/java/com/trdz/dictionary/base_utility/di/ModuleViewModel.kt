@@ -11,17 +11,21 @@ import org.koin.core.qualifier.named
 import org.koin.dsl.module
 
 val moduleViewModelK = module {
-	single<Repository>() { RepositoryExecutor(
-		internalStorage = get() ,
-		dataBasis = get(named(KK_BASIS)),
-		dataServer = get(named(KK_SERVER)),
-		dataInternal = get(named(KK_INTERNAL))) }
+	single<Repository>() {
+		RepositoryExecutor(
+			internalStorage = get(),
+			dataBasis = get(named(KK_BASIS)),
+			dataServer = get(named(KK_SERVER)),
+			dataInternal = get(named(KK_INTERNAL)))
+	}
 	single<SingleLiveData<StatusProcess>>(named(KK_DLBASIC)) { SingleLiveData() }
 	single<SingleLiveData<List<DataLine>>>(named(KK_DLLINE)) { SingleLiveData() }
-	single<ViewModelFactories>() { ViewModelFactories(
-		repository = get(),
-		dataLive = get(named(KK_DLBASIC)),
-		dataLiveList = get(named(KK_DLLINE))) }
+	single<ViewModelFactories>() {
+		ViewModelFactories(
+			repository = get(),
+			dataLive = get(named(KK_DLBASIC)),
+			dataLiveList = get(named(KK_DLLINE)))
+	}
 }
 
 

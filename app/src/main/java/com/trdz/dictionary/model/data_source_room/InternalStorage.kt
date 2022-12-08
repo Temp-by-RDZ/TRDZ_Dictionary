@@ -4,8 +4,9 @@ import android.util.Log
 import com.trdz.dictionary.MyApp
 import com.trdz.dictionary.model.*
 import com.trdz.dictionary.model.data_source_room.database.EntityFavor
-import com.trdz.dictionary.model.data_source_room.database.WordDao
+import com.trdz.dictionary.model.data_source_room.database.EntitySearch
 import com.trdz.dictionary.model.data_source_room.database.EntityWord
+import com.trdz.dictionary.model.data_source_room.database.WordDao
 
 class InternalStorage: ADataSource, InternalData {
 
@@ -58,6 +59,7 @@ class InternalStorage: ADataSource, InternalData {
 			list.forEach { elem ->
 				favorList.add(ResponseMapper.toStorage(elem))
 			}
+			getData().clearFavor()
 			getData().saveFavor(favorList.toList())
 			Log.d("@@@", "Rep - ...Done")
 		}
@@ -78,7 +80,7 @@ class InternalStorage: ADataSource, InternalData {
 
 	override fun removeFavorite(data: DataLine) {
 		try {
-			//getData().reFavor(favorList.toList())
+			getData().deleteFavor(ResponseMapper.toStorage(data))
 			Log.d("@@@", "Rep - ...Done")
 		}
 		catch (e: Exception) {
@@ -106,6 +108,40 @@ class InternalStorage: ADataSource, InternalData {
 		return favorList.toList()
 	}
 //endregion
+
+	//region Data History
+
+	override fun saveHistory(search: DataLine) {
+		try {
+			getData().addSearch(ResponseMapper.toStorageSearch(search))
+			Log.d("@@@", "Rep - ...Done")
+		}
+		catch (e: Exception) {
+			Log.d("@@@", "Rep - ...Failed ${e.message}")
+		}
+	}
+
+	override fun loadHistory(): List<DataLine> {
+		return try {
+			val response = getData().getSearch()
+			if (response.isEmpty()) listOf<DataLine>()
+			else responseFormationSearch(response)
+		}
+		catch (error: Exception) {
+			listOf<DataLine>()
+		}
+	}
+
+	private fun responseFormationSearch(response: List<EntitySearch>): List<DataLine> {
+		val favorList: MutableList<DataLine> = emptyList<DataLine>().toMutableList()
+		response.forEach { entity ->
+			favorList.add(ResponseMapper.fromStorage(entity)
+			)
+		}
+		return favorList.toList()
+	}
+
+	//endregion
 
 	private fun responseEmpty() = Throwable("Error code: 404, Data lost\n")
 	private fun responseFail(error: Exception) = Throwable("Error code: -1, Internal storage unavailable:\n$error")

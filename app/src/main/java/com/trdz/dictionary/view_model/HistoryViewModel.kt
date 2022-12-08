@@ -7,12 +7,12 @@ import com.trdz.dictionary.model.DataLine
 import com.trdz.dictionary.model.Repository
 import kotlinx.coroutines.*
 
-class FavorViewModel(
+class HistoryViewModel(
 	private val repository: Repository,
 	private val dataLive: SingleLiveData<List<DataLine>>,
 ): ViewModel() {
 
-	private var favoriteData: MutableList<DataLine> = listOf<DataLine>().toMutableList()
+	private var historyData: MutableList<DataLine> = listOf<DataLine>().toMutableList()
 	fun getData(): LiveData<List<DataLine>> = dataLive
 
 	private val scope = CoroutineScope(
@@ -42,24 +42,10 @@ class FavorViewModel(
 		jobs?.cancel()
 		with(dataLive) {
 			jobs = scope.launch {
-				favoriteData = repository.initFavorList().toMutableList()
-				postValue(favoriteData)
+				historyData = repository.initSearchList().toMutableList()
+				postValue(historyData)
 			}
 		}
-	}
-
-	fun itemMove(fromPosition: Int, toPosition: Int): List<DataLine> {
-		favoriteData.removeAt(fromPosition).apply {
-			favoriteData.add(toPosition, this)
-		}
-		jobs = scope.launch { repository.update(favoriteData) }
-		return favoriteData.toList()
-	}
-
-	fun itemRemove(data: DataLine, position: Int): List<DataLine> {
-		favoriteData.removeAt(position)
-		jobs = scope.launch { repository.removeFavorite(data) }
-		return favoriteData.toList()
 	}
 
 }

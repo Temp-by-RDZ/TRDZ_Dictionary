@@ -1,32 +1,31 @@
-package com.trdz.dictionary.view.segment_favor
+package com.trdz.dictionary.view.segment_history
 
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.ItemTouchHelper
 import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.EFFECT_DROP
-import com.trdz.dictionary.base_utility.EFFECT_MOVEL
+import com.trdz.dictionary.base_utility.EFFECT_MOVER
 import com.trdz.dictionary.base_utility.EFFECT_SHOW
 import com.trdz.dictionary.databinding.FragmentFavorListBinding
 import com.trdz.dictionary.model.DataLine
 import com.trdz.dictionary.view.CustomOnBackPressed
 import com.trdz.dictionary.view.Navigation
-import com.trdz.dictionary.view.segment_history.WindowHistoryListImpl
+import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl
 import com.trdz.dictionary.view.segment_word.WindowWordListImp
-import com.trdz.dictionary.view_model.FavorViewModel
+import com.trdz.dictionary.view_model.HistoryViewModel
 import com.trdz.dictionary.view_model.ViewModelFactories
 import org.koin.android.ext.android.inject
 
-class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPressed {
+class WindowHistoryListImpl: Fragment(), WindowHistoryListOnClick, CustomOnBackPressed {
 
 	//region Elements
 
 	private var _binding: FragmentFavorListBinding? = null
 	private val binding get() = _binding!!
-	private val adapter = WindowFavorListRecycle(this)
+	private val adapter = WindowHistoryListRecycle(this)
 
 	//endregion
 
@@ -35,7 +34,7 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	private val navigation: Navigation by inject()
 	private val factory: ViewModelFactories by inject()
 
-	private val viewModel: FavorViewModel by viewModels {
+	private val viewModel: HistoryViewModel by viewModels {
 		factory
 	}
 
@@ -55,7 +54,6 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		_binding = FragmentFavorListBinding.inflate(inflater, container, false)
-		ItemTouchHelper(WindowFavorTouch(adapter)).attachToRecyclerView(binding.recyclerView)
 		return binding.root
 	}
 
@@ -69,12 +67,23 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	//endregion
 
 	//region Main functional
+
+	private fun vmSetup() {
+		val observer = Observer<List<DataLine>> { initialize(it) }
+		viewModel.getData().observe(viewLifecycleOwner, observer)
+	}
+
+	private fun bindings() {
+		binding.naming.text = getString(R.string.history)
+		binding.recyclerView.adapter = adapter
+	}
+
 	private fun setMenu() {
 		setHasOptionsMenu(true)
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu) {
-		val curr = menu.findItem(R.id.app_bar_fav)
+		val curr = menu.findItem(R.id.app_bar_history)
 		curr.setIcon(R.drawable.ic_baseline_search_24)
 		val dell = menu.findItem(R.id.app_bar_delete)
 		dell.isVisible = true
@@ -84,22 +93,13 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		when (item.itemId) {
 			R.id.app_bar_fav -> {
-				navigation.replace(requireActivity().supportFragmentManager, WindowWordListImp(), false, effect = EFFECT_SHOW)
+				navigation.replace(requireActivity().supportFragmentManager, WindowFavorListImpl(), false, effect = EFFECT_MOVER)
 			}
 			R.id.app_bar_history -> {
-				navigation.replace(requireActivity().supportFragmentManager, WindowHistoryListImpl(), false, effect = EFFECT_MOVEL)
+				onBackPressed()
 			}
 		}
 		return super.onOptionsItemSelected(item)
-	}
-
-	private fun vmSetup() {
-		val observer = Observer<List<DataLine>> { initialize(it) }
-		viewModel.getData().observe(viewLifecycleOwner, observer)
-	}
-
-	private fun bindings() {
-		binding.recyclerView.adapter = adapter
 	}
 
 	private fun initialize(list: List<DataLine>) {
@@ -108,15 +108,7 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 
 	//endregion
 
-	//region Realization adapter/touch
-
-	override fun onItemMove(fromPosition: Int, toPosition: Int) {
-		adapter.setMoveInList(viewModel.itemMove(fromPosition, toPosition), fromPosition, toPosition)
-	}
-
-	override fun onItemRemove(data: DataLine, position: Int) {
-		adapter.setRemoveFromList(viewModel.itemRemove(data, position), position)
-	}
+	//region Realization adapter
 
 	override fun onItemClick(data: DataLine, position: Int) {
 		navigation.replace(requireActivity().supportFragmentManager, WindowWordListImp.newInstance(data.name), false, effect = EFFECT_DROP)
@@ -125,6 +117,7 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	//endregion
 
 	companion object {
-		fun newInstance() = WindowFavorListImpl()
+		fun newInstance() = WindowHistoryListImpl()
 	}
+
 }

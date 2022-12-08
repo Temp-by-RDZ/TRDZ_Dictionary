@@ -12,9 +12,10 @@ class ViewModelFactories(
 ): ViewModelProvider.Factory {
 
 	@Suppress("UNCHECKED_CAST")
-	override fun <T : ViewModel> create(modelClass: Class<T>): T = when(modelClass){
+	override fun <T: ViewModel> create(modelClass: Class<T>): T = when (modelClass) {
 		WordsViewModel::class.java -> WordsViewModel(repository, dataLive)
 		FavorViewModel::class.java -> FavorViewModel(repository, dataLiveList)
+		HistoryViewModel::class.java -> HistoryViewModel(repository, dataLiveList)
 		else -> throw IllegalArgumentException("Unknown ViewModel class")
 	} as T
 

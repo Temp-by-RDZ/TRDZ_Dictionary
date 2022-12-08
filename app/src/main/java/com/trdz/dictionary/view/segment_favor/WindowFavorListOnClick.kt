@@ -5,5 +5,5 @@ import com.trdz.dictionary.model.DataLine
 interface WindowFavorListOnClick {
 	fun onItemClick(data: DataLine, position: Int)
 	fun onItemMove(fromPosition: Int, toPosition: Int)
-	fun onItemRemove(position: Int)
+	fun onItemRemove(data: DataLine, position: Int)
 }

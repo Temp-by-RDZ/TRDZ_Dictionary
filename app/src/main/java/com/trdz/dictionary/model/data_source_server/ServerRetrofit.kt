@@ -17,7 +17,7 @@ class ServerRetrofit: ADataSource {
 			RequestResults.SuccessWords(responseFormation(response))
 		}
 		catch (error: Exception) {
-			RequestResults.Error(-1,responseFail(error))
+			RequestResults.Error(-1, responseFail(error))
 		}
 	}
 

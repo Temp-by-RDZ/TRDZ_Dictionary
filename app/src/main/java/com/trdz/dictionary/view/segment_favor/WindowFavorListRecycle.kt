@@ -94,7 +94,7 @@ class WindowFavorListRecycle(private val clickExecutor: WindowFavorListOnClick):
 	}
 
 	override fun onItemDismiss(position: Int) {
-		clickExecutor.onItemRemove(position)
+		clickExecutor.onItemRemove(list[position], position)
 	}
 
 }

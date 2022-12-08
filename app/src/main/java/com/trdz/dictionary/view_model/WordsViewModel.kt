@@ -36,9 +36,10 @@ class WordsViewModel(
 	private var jobs: Job? = null
 
 	private val querySearch = MutableStateFlow("")
+
 	init {
 		CoroutineScope(Dispatchers.Main).launch {
-			querySearch.debounce(500)
+			querySearch.debounce(750)
 				.filter { query -> return@filter query.isNotEmpty() }
 				.distinctUntilChanged()
 				.collect { result -> startSearch(result) }
@@ -64,7 +65,7 @@ class WordsViewModel(
 				when (val response = repository.initWordList(target)) {
 					is RequestResults.SuccessWords -> {
 						Log.d("@@@", "Prs - Internal load complete")
-						currentData = emptyData(response.data.dataWord!!).toMutableList()
+						currentData = emptyData(repository.analyze(response.data.dataWord!!)).toMutableList()
 						postValue(StatusProcess.Success(ModelResult(currentData)))
 					}
 					is RequestResults.Error -> {
@@ -77,7 +78,6 @@ class WordsViewModel(
 	}
 
 	private fun startLoad(target: String) {
-		jobs?.cancel()
 		with(dataLive) {
 			postValue(StatusProcess.Loading)
 			repository.setSource(IN_SERVER)
@@ -85,8 +85,8 @@ class WordsViewModel(
 				when (val response = repository.initWordList(target)) {
 					is RequestResults.SuccessWords -> {
 						Log.d("@@@", "Prs - External load complete")
-						currentData = emptyData(response.data.dataWord!!).toMutableList()
-						repository.update(currentData,target)
+						currentData = emptyData(repository.analyze(response.data.dataWord!!)).toMutableList()
+						repository.update(currentData, target)
 						postValue(StatusProcess.Success(ModelResult(currentData)))
 
 					}
@@ -99,7 +99,7 @@ class WordsViewModel(
 		}
 	}
 
-	private suspend fun emptyData(list: List<DataWord>): List<DataWord>{
+	private suspend fun emptyData(list: List<DataWord>): List<DataWord> {
 		return if (list.isEmpty()) {
 			repository.setSource(IN_BASIS)
 			val response = repository.initWordList("") as RequestResults.SuccessWords
@@ -109,15 +109,17 @@ class WordsViewModel(
 	}
 
 	fun getSaved() {
-		dataLive.postValue(StatusProcess.Success(ModelResult(currentData)))
+		val saved = ModelResult(currentData)
+		if (saved.data.isEmpty()) dataLive.postValue(StatusProcess.ForceSet(repository.checkLast()))
+		else dataLive.postValue(StatusProcess.Success(saved))
 	}
 
 	fun favAdd(data: DataWord) {
-		repository.addFavorite(DataLine(data.id,data.name))
+		jobs = scope.launch { repository.addFavorite(DataLine(data.id, data.name)) }
 	}
 
 	fun favRemove(data: DataWord) {
-		repository.removeFavorite(DataLine(data.id,data.name))
+		jobs = scope.launch { repository.removeFavorite(DataLine(data.id, data.name)) }
 	}
 
 	fun visualChange(data: DataWord, position: Int) {

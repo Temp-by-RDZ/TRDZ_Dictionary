@@ -2,22 +2,24 @@ package com.trdz.dictionary.view.segment_word
 
 import android.os.Build
 import android.os.Bundle
+import android.view.*
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import com.trdz.dictionary.R
+import com.trdz.dictionary.base_utility.BUNDLE_SEARCH
+import com.trdz.dictionary.base_utility.EFFECT_DROP
+import com.trdz.dictionary.base_utility.hideKeyboard
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
 import com.trdz.dictionary.model.DataWord
-import com.trdz.dictionary.view_model.WordsViewModel
-import com.trdz.dictionary.view_model.StatusProcess
-import com.trdz.dictionary.view_model.ViewModelFactories
-import org.koin.android.ext.android.inject
-import android.view.*
-import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.*
-import com.trdz.dictionary.base_utility.EFFECT_MOVEL
 import com.trdz.dictionary.view.Navigation
 import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl
+import com.trdz.dictionary.view.segment_history.WindowHistoryListImpl
+import com.trdz.dictionary.view_model.StatusProcess
+import com.trdz.dictionary.view_model.ViewModelFactories
+import com.trdz.dictionary.view_model.WordsViewModel
+import org.koin.android.ext.android.inject
 
 
 class WindowWordListImp: Fragment(), WindowWordListOnClick {
@@ -74,21 +76,8 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 				}
 			}
 			list.recyclerView.adapter = adapter
-			disabler.setOnClickListener {
-				hideKeyboard()
-				enabler.visibility = View.VISIBLE
-				it.visibility = View.GONE
-				target.clearFocus()
-			}
-			enabler.setOnClickListener {
-				val memory = target.query
-				target.isIconified = true
-				disabler.visibility = View.VISIBLE
-				it.visibility = View.GONE
-				target.isIconified = false
-				target.requestFocus()
-				target.setQuery(memory, false)
-			}
+			disabler.setOnClickListener { toViewMode() }
+			enabler.setOnClickListener { toKeyboardMode() }
 			target.isIconified = false
 			target.setOnCloseListener { true }
 			target.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
@@ -104,6 +93,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 			})
 		}
 	}
+
 	//endregion
 
 	//region Menu realization
@@ -112,13 +102,23 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 		setHasOptionsMenu(true)
 	}
 
+	override fun onPrepareOptionsMenu(menu: Menu) {
+		val history = menu.findItem(R.id.app_bar_history)
+		history.setIcon(R.drawable.ic_baseline_books)
+		val fav = menu.findItem(R.id.app_bar_fav)
+		fav.setIcon(R.drawable.ic_baseline_favorite_24)
+		val dell = menu.findItem(R.id.app_bar_delete)
+		dell.isVisible = false
+		super.onPrepareOptionsMenu(menu)
+	}
+
 	override fun onOptionsItemSelected(item: MenuItem): Boolean {
 		when (item.itemId) {
 			R.id.app_bar_history -> {
-				navigation.replace(requireActivity().supportFragmentManager, WindowFavorListImpl(), true, effect = EFFECT_DROP)
+				navigation.replace(requireActivity().supportFragmentManager, WindowHistoryListImpl(), true, effect = EFFECT_DROP)
 			}
 			R.id.app_bar_fav -> {
-				navigation.replace(requireActivity().supportFragmentManager, WindowFavorListImpl(), true, effect = EFFECT_DROP)
+				navigation.replace(requireActivity().supportFragmentManager, WindowFavorListImpl(), false, effect = EFFECT_DROP)
 			}
 		}
 		return super.onOptionsItemSelected(item)
@@ -130,8 +130,8 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	private fun restore() {
 		if (arguments != null) {
-			arguments!!.getString(BUNDLE_SEARCH).let {
-				binding.target.setQuery(it, true)
+			arguments!!.getString(BUNDLE_SEARCH)?.let {
+				forceSet(it)
 			}
 		}
 		else viewModel.getSaved()
@@ -152,7 +152,28 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	//endregion
 
-	//region ViewModel command realization
+	//region Command realization
+
+	private fun toKeyboardMode() {
+		with(binding) {
+			val memory = target.query
+			target.isIconified = true
+			disabler.visibility = View.VISIBLE
+			enabler.visibility = View.GONE
+			target.isIconified = false
+			target.requestFocus()
+			target.setQuery(memory, false)
+		}
+	}
+
+	private fun toViewMode() {
+		with(binding) {
+			hideKeyboard()
+			enabler.visibility = View.VISIBLE
+			disabler.visibility = View.GONE
+			target.clearFocus()
+		}
+	}
 
 	private fun renderData(material: StatusProcess) {
 		when (material) {
@@ -165,6 +186,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 				}
 			}
 			is StatusProcess.Change -> changeState(material.data, material.position, material.count)
+			is StatusProcess.ForceSet -> forceSet(material.data)
 		}
 	}
 
@@ -178,6 +200,11 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	private fun changeState(list: List<DataWord>, position: Int, count: Int) {
 		adapter.stackControl(list, position, count)
+	}
+
+	private fun forceSet(string: String) {
+		toViewMode()
+		binding.target.setQuery(string, true)
 	}
 
 	private fun loadingState(state: Boolean) {
