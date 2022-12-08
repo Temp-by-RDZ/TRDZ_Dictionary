@@ -2,9 +2,12 @@ package com.trdz.dictionary.model
 
 interface Repository {
 	fun setSource(index: Int)
-	suspend fun getInitList(target: String): RequestResults
-	fun dataUpdate(data: MutableList<DataWord>)
-	fun update(target: String)
-	fun getList(): List<DataWord>
-	fun changeStateAt(data: DataWord, position: Int, state: Int): Int
+	//Data Word
+	suspend fun initWordList(target: String): RequestResults
+	fun update(currentData: List<DataWord>,target: String)
+	//Data Favor
+	suspend fun initFavorList(): List<DataLine>
+	fun addFavorite(data: DataLine)
+	fun removeFavorite(data: DataLine)
+	//Data Search
 }

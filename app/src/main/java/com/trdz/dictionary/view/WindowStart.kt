@@ -3,12 +3,11 @@ package com.trdz.dictionary.view
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import com.trdz.dictionary.base_utility.EFFECT_RISE
 import com.trdz.dictionary.databinding.FragmentWindowStartBinding
-import com.trdz.dictionary.view.segment_users.WindowWordListImp
+import com.trdz.dictionary.view.segment_word.WindowWordListImp
 import org.koin.android.ext.android.inject
 
 class WindowStart: Fragment() {

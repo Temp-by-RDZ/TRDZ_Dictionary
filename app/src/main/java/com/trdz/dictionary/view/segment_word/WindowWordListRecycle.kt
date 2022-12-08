@@ -1,11 +1,15 @@
-package com.trdz.dictionary.view.segment_users
+package com.trdz.dictionary.view.segment_word
 
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import coil.load
+import coil.request.ImageRequest
+import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.TYPE_CARD
 import com.trdz.dictionary.base_utility.TYPE_NONE
 import com.trdz.dictionary.base_utility.TYPE_TITLE
@@ -17,17 +21,10 @@ import com.trdz.dictionary.model.DataWord
 class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 	private var list: List<DataWord> = emptyList()
-	private var opened = -1
 
 	fun stackControl(newList: List<DataWord>, first: Int, count: Int) {
 		this.list = newList
 		notifyItemRangeChanged(first, count)
-	}
-
-	fun subClose(position: Int) {
-		if (position == -1) return
-		opened = -1
-		notifyItemChanged(position, true)
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
@@ -39,12 +36,12 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 	override fun getItemViewType(position: Int): Int {
 		return when (getItemViewState(position)) {
 			2 -> TYPE_NONE
-			else -> list[position].type
+			else -> list[position].visual.type
 		}
 	}
 
 	private fun getItemViewState(position: Int): Int {
-		return list[position].state
+		return list[position].visual.state
 	}
 
 	override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -73,9 +70,6 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 		if (payloads.isEmpty()) {
 			super.onBindViewHolder(holder, position, payloads)
 		}
-		else if (getItemViewType(position) != TYPE_NONE) {
-			(holder as Element).subClose()
-		}
 	}
 
 	override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -91,22 +85,36 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 	}
 
 	inner class Element(view: View): ListElement(view) {
-		fun subClose() {
+
+		private fun subExpand(data: DataWord) {
 			(ElementCardBinding.bind(itemView)).apply {
-				secondBox.visibility = View.GONE
+				if (data.visual.expand) {
+					secondBox.visibility = View.VISIBLE
+					pic.setBackgroundResource(R.drawable.plaseholder)
+					pic.load("https:"+data.iconUrl) {
+						listener(
+							onSuccess = { _, _ ->
+								Log.d("@@@", "App - Load comp")
+								// do nothing
+							},
+							onError = { request: ImageRequest, throwable: Throwable ->
+								Log.d("@@@", "App - coil error $throwable")
+								pic.setBackgroundResource(R.drawable.nofile)
+							})
+					}
+				}
+				else {
+					secondBox.visibility = View.GONE
+				}
 			}
 		}
 
 		override fun myBind(data: DataWord) {
 			(ElementCardBinding.bind(itemView)).apply {
+				subExpand(data)
 				root.setOnClickListener {
-					subClose(opened)
-					if (opened != layoutPosition) {
-						opened = layoutPosition
-						secondBox.visibility = View.VISIBLE
-					}
-					else opened = -1
-				}
+					data.visual.expand = !data.visual.expand
+					subExpand(data) }
 				val sb = StringBuilder(data.name)
 				if (data.subName != "") {
 					sb.append(" (")
@@ -119,17 +127,33 @@ class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): R
 	}
 
 	inner class ElementLider(view: View): ListElement(view) {
+
+		private fun subExpand(data: DataWord) {
+			(ElementLiderBinding.bind(itemView)).apply {
+				if (data.visual.expand) {
+					fav.setBackgroundResource(R.drawable.ic_favorite_active)
+				}
+				else {
+					fav.setBackgroundResource(R.drawable.ic_favourite)
+				}
+			}
+		}
+
 		override fun myBind(data: DataWord) {
 			(ElementLiderBinding.bind(itemView)).apply {
-				if (data.state == 1) ObjectAnimator.ofFloat(blockImage, View.ROTATION, -90f, 0f).setDuration(250).start()
+				subExpand(data)
+				if (data.visual.state == 1) ObjectAnimator.ofFloat(blockImage, View.ROTATION, -90f, 0f).setDuration(250).start()
 				title.text = data.name
 				trancript.text = data.subName
 				root.setOnClickListener {
-					subClose(opened)
-					if (data.state == 1) ObjectAnimator.ofFloat(blockImage, View.ROTATION, 0f, -90f).setDuration(500).start()
+					if (data.visual.state == 1) ObjectAnimator.ofFloat(blockImage, View.ROTATION, 0f, -90f).setDuration(500).start()
 					else ObjectAnimator.ofFloat(blockImage, View.ROTATION, -90f, 0f).setDuration(500).start()
 					clickExecutor.onItemClickSpecial(data, layoutPosition)
 				}
+				favorZone.setOnClickListener {
+					data.visual.expand = !data.visual.expand
+					subExpand(data)
+					clickExecutor.onItemClick(data, layoutPosition,data.visual.expand)}
 			}
 		}
 	}

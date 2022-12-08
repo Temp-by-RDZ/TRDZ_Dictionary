@@ -14,7 +14,7 @@ class ServerRetrofit: ADataSource {
 		val retrofit = MyApp.di.get(ServerRetrofitApi::class)
 		return try {
 			val response = retrofit.getResponse(target).execute()
-			RequestResults.Success(responseFormation(response))
+			RequestResults.SuccessWords(responseFormation(response))
 		}
 		catch (error: Exception) {
 			RequestResults.Error(-1,responseFail(error))

@@ -1,66 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        android:id="@+id/list"
-        layout="@layout/preset_words_list"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:id="@+id/disabler"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/hgn_bottom_block_h"
-        android:layout_gravity="bottom"
-        android:background="?colorPrimary"/>
-
-    <com.google.android.material.bottomappbar.BottomAppBar
-        android:id="@+id/bottom_app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/low_bottom_block_h"
-        android:layout_gravity="bottom"
-        android:backgroundTint="@color/background"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:fabAlignmentMode="end" />
-
-    <androidx.cardview.widget.CardView
-        android:layout_marginStart="@dimen/search_margin_s"
-        android:layout_marginEnd="@dimen/search_margin_s"
-        android:layout_marginBottom="@dimen/search_margin_b"
-        android:layout_width="match_parent"
-        android:layout_gravity="bottom"
-        android:layout_height="42dp"
-        app:strokeColor="@color/black"
-        app:cardCornerRadius="@dimen/lider_line_corner_size"
-        app:strokeWidth="@dimen/lider_line_corner_width">
-        <androidx.appcompat.widget.SearchView
-            android:id="@+id/target"
-            android:layout_marginStart="15dp"
-            android:layout_marginEnd="15dp"
+        <include
+            android:id="@+id/list"
+            layout="@layout/preset_words_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="@string/hint_help"/>
+            android:layout_height="match_parent" />
 
         <FrameLayout
+            android:id="@+id/disabler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
-            android:visibility="gone"
-            android:id="@+id/enabler"
             android:focusable="true" />
-    </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/hgn_bottom_block_h"
+            android:layout_gravity="bottom"
+            android:background="?colorPrimary" />
+
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottom_app_bar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/low_bottom_block_h"
+            android:layout_gravity="bottom"
+            android:backgroundTint="@color/background"
+            app:contentInsetLeft="0dp"
+            app:contentInsetStart="0dp"
+            app:fabAlignmentMode="end" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_gravity="bottom"
+            android:layout_marginStart="@dimen/search_margin_s"
+            android:layout_marginEnd="@dimen/search_margin_s"
+            android:layout_marginBottom="@dimen/search_margin_b"
+            app:cardCornerRadius="@dimen/lider_line_corner_size"
+            app:strokeColor="@color/black"
+            app:strokeWidth="@dimen/lider_line_corner_width">
+
+            <androidx.appcompat.widget.SearchView
+                android:id="@+id/target"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                android:hint="@string/hint_help" />
+
+            <FrameLayout
+                android:id="@+id/enabler"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="gone" />
+        </androidx.cardview.widget.CardView>
 
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>
+
+

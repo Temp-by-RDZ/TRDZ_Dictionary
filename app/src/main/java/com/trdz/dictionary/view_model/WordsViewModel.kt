@@ -3,19 +3,24 @@ package com.trdz.dictionary.view_model
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import com.trdz.dictionary.base_utility.IN_BASIS
 import com.trdz.dictionary.base_utility.IN_SERVER
 import com.trdz.dictionary.base_utility.IN_STORAGE
+import com.trdz.dictionary.model.DataLine
 import com.trdz.dictionary.model.DataWord
 import com.trdz.dictionary.model.Repository
 import com.trdz.dictionary.model.RequestResults
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
-class MainViewModel(
+class WordsViewModel(
 	private val repository: Repository,
 	private val dataLive: SingleLiveData<StatusProcess>,
 ): ViewModel() {
+
+	private var currentData: MutableList<DataWord> = listOf<DataWord>().toMutableList()
+
+	fun getData(): LiveData<StatusProcess> = dataLive
 
 	private val scope = CoroutineScope(
 		Dispatchers.IO
@@ -39,16 +44,15 @@ class MainViewModel(
 				.collect { result -> startSearch(result) }
 		}
 	}
-	private fun dataFromNetwork(query: String): Flow<String> {
-		return flow {
-			emit(query)
-		}
+
+	override fun onCleared() {
+		jobs?.cancel()
+		super.onCleared()
 	}
+
 	fun setSearch(search: String) {
 		querySearch.value = search
 	}
-
-	fun getPodData(): LiveData<StatusProcess> = dataLive
 
 	private fun startSearch(target: String) {
 		Log.d("@@@", "Prs - Start loading")
@@ -57,13 +61,11 @@ class MainViewModel(
 			postValue(StatusProcess.Loading)
 			repository.setSource(IN_STORAGE)
 			jobs = scope.launch {
-				when (val response = repository.getInitList(target)) {
-					is RequestResults.Success -> {
+				when (val response = repository.initWordList(target)) {
+					is RequestResults.SuccessWords -> {
 						Log.d("@@@", "Prs - Internal load complete")
-						val result = response.data.dataWord!!
-						repository.dataUpdate(result.toMutableList())
-						postValue(StatusProcess.Success(ModelResult(repository.getList())))
-
+						currentData = emptyData(response.data.dataWord!!).toMutableList()
+						postValue(StatusProcess.Success(ModelResult(currentData)))
 					}
 					is RequestResults.Error -> {
 						Log.w("@@@", "Prs - Failed internal load start external loading ${response.error}")
@@ -80,13 +82,12 @@ class MainViewModel(
 			postValue(StatusProcess.Loading)
 			repository.setSource(IN_SERVER)
 			jobs = scope.launch {
-				when (val response = repository.getInitList(target)) {
-					is RequestResults.Success -> {
+				when (val response = repository.initWordList(target)) {
+					is RequestResults.SuccessWords -> {
 						Log.d("@@@", "Prs - External load complete")
-						val result = response.data.dataWord!!
-						repository.dataUpdate(result.toMutableList())
-						repository.update(target)
-						postValue(StatusProcess.Success(ModelResult(repository.getList())))
+						currentData = emptyData(response.data.dataWord!!).toMutableList()
+						repository.update(currentData,target)
+						postValue(StatusProcess.Success(ModelResult(currentData)))
 
 					}
 					is RequestResults.Error -> {
@@ -98,33 +99,51 @@ class MainViewModel(
 		}
 	}
 
+	private suspend fun emptyData(list: List<DataWord>): List<DataWord>{
+		return if (list.isEmpty()) {
+			repository.setSource(IN_BASIS)
+			val response = repository.initWordList("") as RequestResults.SuccessWords
+			response.data.dataWord!!
+		}
+		else list
+	}
+
 	fun getSaved() {
-		dataLive.postValue(StatusProcess.Success(ModelResult(repository.getList())))
+		dataLive.postValue(StatusProcess.Success(ModelResult(currentData)))
+	}
+
+	fun favAdd(data: DataWord) {
+		repository.addFavorite(DataLine(data.id,data.name))
+	}
+
+	fun favRemove(data: DataWord) {
+		repository.removeFavorite(DataLine(data.id,data.name))
 	}
 
 	fun visualChange(data: DataWord, position: Int) {
-		val count = if (data.state == 1) {
-			repository.changeStateAt(data, position, 0)
+		val count = if (data.visual.state == 1) {
+			changeStateAt(data, position, 0)
 		}
 		else {
-			repository.changeStateAt(data, position, 1)
+			changeStateAt(data, position, 1)
 		}
-		dataLive.postValue(StatusProcess.Change(repository.getList(), position + 1, count))
+		dataLive.postValue(StatusProcess.Change(currentData, position + 1, count))
 	}
 
-	override fun onCleared() {
-		super.onCleared()
+	private fun changeStateAt(data: DataWord, position: Int, state: Int): Int {
+		currentData[position].visual.state = state
+		return setState(state * 2, data.visual.group + 1)
 	}
-}
 
-class ViewModelFactory(
-	private val repository: Repository,
-	private val dataLive: SingleLiveData<StatusProcess>,
-): ViewModelProvider.Factory {
-
-	@Suppress("UNCHECKED_CAST")
-	override fun <T: ViewModel> create(modelClass: Class<T>): T {
-		return MainViewModel(repository, dataLive) as T
+	private fun setState(state: Int, group: Int): Int {
+		var count = 0
+		currentData.forEach { tek ->
+			if (tek.visual.group == group) {
+				tek.visual.state = state
+				count++
+			}
+		}
+		return count
 	}
 
 }

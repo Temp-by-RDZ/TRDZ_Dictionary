@@ -3,6 +3,7 @@ package com.trdz.dictionary.view
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.trdz.dictionary.R
 import com.trdz.dictionary.base_utility.KEY_OPTIONS
@@ -11,10 +12,6 @@ import com.trdz.dictionary.base_utility.stopToast
 import org.koin.android.ext.android.inject
 
 class MainActivity: AppCompatActivity() {
-
-	//region Elements
-
-	//endregion
 
 	//region Injected
 
@@ -52,6 +49,7 @@ class MainActivity: AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		themeSettings()
 		setContentView(R.layout.activity_main)
+		menuConstruct()
 		if (savedInstanceState == null) {
 			Log.d("@@@", "Start program")
 			navigation.add(supportFragmentManager, WindowStart(), false, R.id.container_fragment_primal)
@@ -66,6 +64,14 @@ class MainActivity: AppCompatActivity() {
 		}
 	}
 
+	private fun menuConstruct() {
+		setSupportActionBar(findViewById(R.id.toolbar))
+	}
+
+	override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+		menuInflater.inflate(R.menu.menu_tolbar_navigation, menu)
+		return super.onCreateOptionsMenu(menu)
+	}
 	//endregion
 
 }

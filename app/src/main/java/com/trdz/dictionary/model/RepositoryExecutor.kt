@@ -12,10 +12,7 @@ class RepositoryExecutor(
 	private val dataInternal: ADataSource,
 ): Repository {
 
-	private var currentData: MutableList<DataWord> = listOf<DataWord>().toMutableList()
 	private lateinit var dataSource: ADataSource
-
-	//region Data update
 
 	override fun setSource(index: Int) {
 		when (index) {
@@ -24,44 +21,34 @@ class RepositoryExecutor(
 			IN_SERVER -> dataSource = dataServer
 		}
 	}
-	override suspend fun getInitList(target: String): RequestResults {
+
+	//region Word Data update
+
+	override suspend fun initWordList(target: String): RequestResults {
 		return dataSource.loadWords(target)
 	}
 
-	override fun dataUpdate(data: MutableList<DataWord>) {
-		if (data.isEmpty()) {
-			data.add(DataWord("Не найдено", "Этого слова нет в ScyEng базе", -1, ""))
-		}
-		currentData = data
-	}
-
-	override fun update(target: String) {
+	override fun update(currentData: List<DataWord>,target: String) {
 		Log.d("@@@", "Rep - User Saving...")
 		internalStorage.saveWords(currentData, target)
 	}
 
 	//endregion
 
-	//region Data access
+	//region Favor Data update
 
-	override fun getList(): List<DataWord> {
-		return currentData
+	override suspend fun initFavorList(): List<DataLine> {
+		return internalStorage.loadFavor()
 	}
 
-	override fun changeStateAt(data: DataWord, position: Int, state: Int): Int {
-		currentData[position].state = state
-		return setState(state * 2, data.group + 1)
+	override fun addFavorite(data: DataLine) {
+		Log.d("@@@", "Rep - Adding favorite...")
+		internalStorage.addFavorite(data)
 	}
 
-	private fun setState(state: Int, group: Int): Int {
-		var count = 0
-		currentData.forEach { tek ->
-			if (tek.group == group) {
-				tek.state = state
-				count++
-			}
-		}
-		return count
+	override fun removeFavorite(data: DataLine) {
+		Log.d("@@@", "Rep - Remove favorite...")
+		internalStorage.removeFavorite(data)
 	}
 
 	//endregion

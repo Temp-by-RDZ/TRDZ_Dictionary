@@ -1,0 +1,9 @@
+package com.trdz.dictionary.view.segment_favor
+
+import com.trdz.dictionary.model.DataLine
+
+interface WindowFavorListOnClick {
+	fun onItemClick(data: DataLine, position: Int)
+	fun onItemMove(fromPosition: Int, toPosition: Int)
+	fun onItemRemove(position: Int)
+}

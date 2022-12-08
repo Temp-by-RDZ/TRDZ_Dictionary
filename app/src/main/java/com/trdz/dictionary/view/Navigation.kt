@@ -4,9 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.EFFECT_FADE
-import com.trdz.dictionary.base_utility.EFFECT_RISE
-import com.trdz.dictionary.base_utility.EFFECT_SLIDE
+import com.trdz.dictionary.base_utility.*
 
 class Navigation(private var fastContainer: Int = 0) {
 
@@ -29,8 +27,28 @@ class Navigation(private var fastContainer: Int = 0) {
 					R.anim.fade_out,
 				)
 				EFFECT_SLIDE -> setCustomAnimations(
-					R.anim.fade_in,
+					R.anim.slide_in,
+					R.anim.slide_out,
+				)
+				EFFECT_DROP  ->setCustomAnimations(
+					R.anim.move_from_up,
 					R.anim.fade_out,
+				)
+				EFFECT_MOVED ->setCustomAnimations(
+					R.anim.move_from_up,
+					R.anim.slide_down,
+				)
+				EFFECT_MOVEL ->setCustomAnimations(
+					R.anim.slide_in,
+					R.anim.move_to_left,
+				)
+				EFFECT_MOVER ->setCustomAnimations(
+					R.anim.move_from_left,
+					R.anim.slide_out,
+				)
+				EFFECT_MOVEU ->setCustomAnimations(
+					R.anim.slide_up,
+					R.anim.move_to_up,
 				)
 			}
 			add(container, fragment!!)
@@ -52,8 +70,28 @@ class Navigation(private var fastContainer: Int = 0) {
 					R.anim.fade_out,
 				)
 				EFFECT_SLIDE -> setCustomAnimations(
-					R.anim.fade_in,
+					R.anim.slide_in,
+					R.anim.slide_out,
+				)
+				EFFECT_DROP  ->setCustomAnimations(
+					R.anim.move_from_up,
 					R.anim.fade_out,
+				)
+				EFFECT_MOVED ->setCustomAnimations(
+					R.anim.move_from_up,
+					R.anim.slide_down,
+				)
+				EFFECT_MOVEL ->setCustomAnimations(
+					R.anim.slide_in,
+					R.anim.move_to_left,
+				)
+				EFFECT_MOVER ->setCustomAnimations(
+					R.anim.move_from_left,
+					R.anim.slide_out,
+				)
+				EFFECT_MOVEU ->setCustomAnimations(
+					R.anim.slide_up,
+					R.anim.move_to_up,
 				)
 			}
 			replace(container, fragment!!)

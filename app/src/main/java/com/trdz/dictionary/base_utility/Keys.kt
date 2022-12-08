@@ -4,6 +4,11 @@ package com.trdz.dictionary.base_utility
 const val EFFECT_RISE = "RISE"
 const val EFFECT_FADE = "FADE"
 const val EFFECT_SLIDE = "SLIDE"
+const val EFFECT_DROP = "DROP"
+const val EFFECT_MOVED = "MOVE2"
+const val EFFECT_MOVEL = "MOVE4"
+const val EFFECT_MOVER = "MOVE6"
+const val EFFECT_MOVEU = "MOVE8"
 
 //Shared preference
 const val KEY_OPTIONS = "OPTNS"
@@ -14,6 +19,11 @@ const val KEY_BANDL = "BANDL"
 const val KK_BASIS = "BASIS"
 const val KK_INTERNAL = "INTERNAL"
 const val KK_SERVER = "SERVER"
+const val KK_DLBASIC = "DLBasic"
+const val KK_DLLINE = "DLLine"
+
+///BUNDLE
+const val BUNDLE_SEARCH = "BSEARCH"
 
 //LIST TYPES
 const val TYPE_NONE = 0

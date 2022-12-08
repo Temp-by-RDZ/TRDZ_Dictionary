@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/note_diff"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:id="@+id/list_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/l_name"
+            style="@style/Lines"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/note_line_height"
+            tools:text="Sample Note text line"/>
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
+

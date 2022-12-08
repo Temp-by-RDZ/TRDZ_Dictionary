@@ -19,33 +19,39 @@
             android:orientation="horizontal">
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_marginStart="@dimen/margin_giant"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_giant"
                 android:gravity="center"
                 android:text="@string/t_tire"
                 android:textSize="@dimen/lider_line_text_size" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:layout_marginStart="@dimen/margin_normal"
                 android:id="@+id/main"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/margin_normal"
                 android:textSize="@dimen/lider_line_text_size" />
 
         </LinearLayout>
 
-        <androidx.appcompat.widget.AppCompatImageView
+        <FrameLayout
             android:id="@+id/secondBox"
-            android:layout_width="400dp"
-            android:layout_height="400dp"
-            android:layout_gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:visibility="gone"
+            tools:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/apper_box"
-            tools:visibility="visible"
-            app:srcCompat="@drawable/nofile" />
+            app:layout_constraintTop_toBottomOf="@+id/apper_box">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
 
         <View
             android:layout_width="match_parent"

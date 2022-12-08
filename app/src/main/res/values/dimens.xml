@@ -66,5 +66,6 @@
     <dimen name="search_margin_e">95dp</dimen>
     <dimen name="search_margin_b">6dp</dimen>
     <dimen name="margin_bigger">30dp</dimen>
+    <dimen name="fav_zone">56dp</dimen>
 
 </resources>

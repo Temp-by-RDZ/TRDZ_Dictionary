@@ -1,28 +1,23 @@
-package com.trdz.dictionary.view.segment_users
+package com.trdz.dictionary.view.segment_word
 
 import android.os.Build
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import com.trdz.dictionary.base_utility.hideKeyboard
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
 import com.trdz.dictionary.model.DataWord
-import com.trdz.dictionary.view_model.MainViewModel
+import com.trdz.dictionary.view_model.WordsViewModel
 import com.trdz.dictionary.view_model.StatusProcess
-import com.trdz.dictionary.view_model.ViewModelFactory
+import com.trdz.dictionary.view_model.ViewModelFactories
 import org.koin.android.ext.android.inject
-import android.app.Activity
-import android.content.Context
-import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat
-import androidx.core.content.ContextCompat.getSystemService
-import android.view.View.OnFocusChangeListener
+import android.view.*
 import com.trdz.dictionary.R
+import com.trdz.dictionary.base_utility.*
+import com.trdz.dictionary.base_utility.EFFECT_MOVEL
+import com.trdz.dictionary.view.Navigation
+import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl
 
 
 class WindowWordListImp: Fragment(), WindowWordListOnClick {
@@ -37,12 +32,12 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	//region Injected
 
-	private val factory: ViewModelFactory by inject()
+	private val navigation: Navigation by inject()
+	private val factory: ViewModelFactories by inject()
 
-	private val viewModel: MainViewModel by viewModels {
+	private val viewModel: WordsViewModel by viewModels {
 		factory
 	}
-
 
 	//endregion
 
@@ -61,13 +56,14 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		vmSetup()
+		setMenu()
 		bindings()
-		restore(savedInstanceState)
+		restore()
 	}
 
 	private fun vmSetup() {
 		val observer = Observer<StatusProcess> { renderData(it) }
-		viewModel.getPodData().observe(viewLifecycleOwner, observer)
+		viewModel.getData().observe(viewLifecycleOwner, observer)
 	}
 
 	private fun bindings() {
@@ -91,11 +87,11 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 				it.visibility = View.GONE
 				target.isIconified = false
 				target.requestFocus()
-				target.setQuery(memory,false)
+				target.setQuery(memory, false)
 			}
 			target.isIconified = false
-			target.setOnCloseListener {true}
-			target.setOnQueryTextListener( object : SearchView.OnQueryTextListener {
+			target.setOnCloseListener { true }
+			target.setOnQueryTextListener(object: SearchView.OnQueryTextListener {
 				override fun onQueryTextSubmit(query: String?): Boolean {
 					query?.let { viewModel.setSearch(it) }
 					return true
@@ -110,38 +106,36 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	}
 	//endregion
 
+	//region Menu realization
+
+	private fun setMenu() {
+		setHasOptionsMenu(true)
+	}
+
+	override fun onOptionsItemSelected(item: MenuItem): Boolean {
+		when (item.itemId) {
+			R.id.app_bar_history -> {
+				navigation.replace(requireActivity().supportFragmentManager, WindowFavorListImpl(), true, effect = EFFECT_DROP)
+			}
+			R.id.app_bar_fav -> {
+				navigation.replace(requireActivity().supportFragmentManager, WindowFavorListImpl(), true, effect = EFFECT_DROP)
+			}
+		}
+		return super.onOptionsItemSelected(item)
+	}
+
+	//endregion
+
 	//region Instance
 
-// Сособ сохранения состояния через VM
-
-	private fun restore(bundle: Bundle?) {
-		viewModel.getSaved()
-	}
-
-	private fun basicRestore(list: List<DataWord>) {
-		//Не используется в методе востановления через VM
-	}
-
-/* Базовый способ сохранеия состояния через сохранение
-
-	private var lastUsed: List<DataWord> = listOf()
-
-	private fun basicRestore(list: List<DataWord>){
-		lastUsed = list
-	}
-
-	private fun restore(bundle: Bundle?) {
-		bundle?.getParcelableArray(KEY_BANDL)?.let { refresh(it.toList() as List<DataWord>) }
-	}
-
-	override fun onSaveInstanceState(outState: Bundle) {
-		super.onSaveInstanceState(outState)
-		binding.run {
-			outState.putParcelableArray(KEY_BANDL, last_used.toTypedArray())
+	private fun restore() {
+		if (arguments != null) {
+			arguments!!.getString(BUNDLE_SEARCH).let {
+				binding.target.setQuery(it, true)
+			}
 		}
+		else viewModel.getSaved()
 	}
-
-*/
 
 	//endregion
 
@@ -149,6 +143,11 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	override fun onItemClickSpecial(data: DataWord, position: Int) {
 		viewModel.visualChange(data, position)
+	}
+
+	override fun onItemClick(data: DataWord, position: Int, type: Boolean) {
+		if (type) viewModel.favAdd(data)
+		else viewModel.favRemove(data)
 	}
 
 	//endregion
@@ -174,12 +173,10 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	}
 
 	private fun refresh(list: List<DataWord>) {
-		basicRestore(list)
 		adapter.setList(list)
 	}
 
 	private fun changeState(list: List<DataWord>, position: Int, count: Int) {
-		basicRestore(list)
 		adapter.stackControl(list, position, count)
 	}
 
@@ -198,6 +195,10 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	companion object {
 		@JvmStatic
-		fun newInstance() = WindowWordListImp()
+		fun newInstance(search: String) = WindowWordListImp().apply {
+			arguments = Bundle().apply {
+				putString(BUNDLE_SEARCH, search)
+			}
+		}
 	}
 }

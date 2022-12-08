@@ -3,6 +3,7 @@ package com.trdz.dictionary.model.data_source_server
 import com.trdz.dictionary.base_utility.TYPE_CARD
 import com.trdz.dictionary.base_utility.TYPE_TITLE
 import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.VisualState
 import com.trdz.dictionary.model.data_source_server.data_word.dto.Meaning
 import com.trdz.dictionary.model.data_source_server.data_word.dto.WordsDTOItem
 
@@ -15,9 +16,10 @@ object ResponseMapper {
 				name = text,
 				subName = trn,
 				iconUrl = "",
-				type = TYPE_TITLE,
-				group = index,
-				state = 1
+				visual = VisualState(
+					type = TYPE_TITLE,
+					group = index,
+					state = 1)
 			)
 		}
 	}
@@ -29,9 +31,10 @@ object ResponseMapper {
 				name = translation.text,
 				subName = translation.note ?: "",
 				iconUrl = imageUrl,
-				type = TYPE_CARD,
-				group = index,
-				state = 2
+				visual = VisualState(
+					type = TYPE_CARD,
+					group = index,
+					state = 2)
 			)
 		}
 	}
