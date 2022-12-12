@@ -2,7 +2,7 @@ package com.trdz.dictionary.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
 import com.trdz.dictionary.model.Repository
 
 class ViewModelFactories(

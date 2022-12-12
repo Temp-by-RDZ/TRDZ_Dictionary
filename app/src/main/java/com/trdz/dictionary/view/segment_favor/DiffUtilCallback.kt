@@ -1,7 +1,7 @@
 package com.trdz.dictionary.view.segment_favor
 
 import androidx.recyclerview.widget.DiffUtil
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
 
 class DiffUtilCallback(
 	private val oldList: List<DataLine>,

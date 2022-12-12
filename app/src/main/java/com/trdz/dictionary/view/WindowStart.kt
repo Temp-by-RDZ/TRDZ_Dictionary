@@ -5,8 +5,8 @@ import android.os.Handler
 import android.os.Looper
 import android.view.*
 import androidx.fragment.app.Fragment
-import com.trdz.dictionary.base_utility.EFFECT_RISE
 import com.trdz.dictionary.databinding.FragmentWindowStartBinding
+import com.trdz.dictionary.utility.EFFECT_RISE
 import com.trdz.dictionary.view.segment_word.WindowWordListImp
 import org.koin.android.ext.android.inject
 

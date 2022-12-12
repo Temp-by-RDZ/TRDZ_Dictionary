@@ -3,7 +3,7 @@ package com.trdz.dictionary.view_model
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
 import com.trdz.dictionary.model.Repository
 import kotlinx.coroutines.*
 

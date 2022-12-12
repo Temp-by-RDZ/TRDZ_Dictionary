@@ -8,3 +8,10 @@ dependencyResolutionManagement {
 }
 rootProject.name = "TRDZ_Dictionary"
 include ':app'
+include ':Model'
+include ':Utility'
+include ':Model:SourceServer'
+include ':Model:data'
+include ':Model:SourceRoom'
+include ':Model:SourceRoom'
+include ':Model:SourceRoom'

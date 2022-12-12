@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import coil.request.ImageRequest
 import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.TYPE_CARD
-import com.trdz.dictionary.base_utility.TYPE_NONE
-import com.trdz.dictionary.base_utility.TYPE_TITLE
 import com.trdz.dictionary.databinding.ElementCardBinding
 import com.trdz.dictionary.databinding.ElementHiderBinding
 import com.trdz.dictionary.databinding.ElementLiderBinding
-import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.data.DataWord
+import com.trdz.dictionary.utility.TYPE_CARD
+import com.trdz.dictionary.utility.TYPE_NONE
+import com.trdz.dictionary.utility.TYPE_TITLE
 
 class WindowWordListRecycle(private val clickExecutor: WindowWordListOnClick): RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

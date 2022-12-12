@@ -1,6 +1,6 @@
 package com.trdz.dictionary.view_model
 
-import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.data.DataWord
 
 sealed class StatusProcess {
 	//Базовые команды

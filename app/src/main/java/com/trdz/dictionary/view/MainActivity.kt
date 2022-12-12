@@ -6,9 +6,9 @@ import android.util.Log
 import android.view.Menu
 import androidx.appcompat.app.AppCompatActivity
 import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.KEY_OPTIONS
-import com.trdz.dictionary.base_utility.KEY_THEME
-import com.trdz.dictionary.base_utility.stopToast
+import com.trdz.dictionary.utility.KEY_OPTIONS
+import com.trdz.dictionary.utility.KEY_THEME
+import com.trdz.dictionary.utility.stopToast
 import org.koin.android.ext.android.inject
 
 class MainActivity: AppCompatActivity() {

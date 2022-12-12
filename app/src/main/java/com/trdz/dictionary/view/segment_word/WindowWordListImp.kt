@@ -8,11 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.BUNDLE_SEARCH
-import com.trdz.dictionary.base_utility.EFFECT_DROP
-import com.trdz.dictionary.base_utility.hideKeyboard
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
-import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.data.DataWord
+import com.trdz.dictionary.utility.BUNDLE_SEARCH
+import com.trdz.dictionary.utility.EFFECT_DROP
+import com.trdz.dictionary.utility.hideKeyboard
 import com.trdz.dictionary.view.Navigation
 import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl
 import com.trdz.dictionary.view.segment_history.WindowHistoryListImpl

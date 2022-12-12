@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.EFFECT_DROP
-import com.trdz.dictionary.base_utility.EFFECT_MOVER
-import com.trdz.dictionary.base_utility.EFFECT_SHOW
 import com.trdz.dictionary.databinding.FragmentFavorListBinding
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
+import com.trdz.dictionary.utility.EFFECT_DROP
+import com.trdz.dictionary.utility.EFFECT_MOVER
+import com.trdz.dictionary.utility.EFFECT_SHOW
 import com.trdz.dictionary.view.CustomOnBackPressed
 import com.trdz.dictionary.view.Navigation
 import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl

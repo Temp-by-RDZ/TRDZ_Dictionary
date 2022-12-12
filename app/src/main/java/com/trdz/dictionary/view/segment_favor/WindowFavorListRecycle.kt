@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.trdz.dictionary.R
 import com.trdz.dictionary.databinding.ElementLineBinding
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
 
 class WindowFavorListRecycle(private val clickExecutor: WindowFavorListOnClick): RecyclerView.Adapter<WindowFavorListRecycle.NoteLine?>(), WindowNoteOnTouch {
 

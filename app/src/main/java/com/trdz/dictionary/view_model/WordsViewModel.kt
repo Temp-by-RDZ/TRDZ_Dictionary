@@ -3,13 +3,13 @@ package com.trdz.dictionary.view_model
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.trdz.dictionary.base_utility.IN_BASIS
-import com.trdz.dictionary.base_utility.IN_SERVER
-import com.trdz.dictionary.base_utility.IN_STORAGE
-import com.trdz.dictionary.model.DataLine
-import com.trdz.dictionary.model.DataWord
+import com.trdz.dictionary.model.data.DataLine
+import com.trdz.dictionary.model.data.DataWord
 import com.trdz.dictionary.model.Repository
-import com.trdz.dictionary.model.RequestResults
+import com.trdz.dictionary.model.data.RequestResults
+import com.trdz.dictionary.utility.IN_BASIS
+import com.trdz.dictionary.utility.IN_SERVER
+import com.trdz.dictionary.utility.IN_STORAGE
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 
@@ -72,6 +72,8 @@ class WordsViewModel(
 						Log.w("@@@", "Prs - Failed internal load start external loading ${response.error}")
 						startLoad(target)
 					}
+					else -> {
+						Log.w("@@@", "Prs - Unwanted Package - $response")}
 				}
 			}
 		}
@@ -94,6 +96,8 @@ class WordsViewModel(
 						Log.e("@@@", "Prs - Loading failed ${response.error}")
 						postValue(StatusProcess.Error(-2, response.error))
 					}
+					else -> {
+						Log.w("@@@", "Prs - Unwanted Package - $response")}
 				}
 			}
 		}

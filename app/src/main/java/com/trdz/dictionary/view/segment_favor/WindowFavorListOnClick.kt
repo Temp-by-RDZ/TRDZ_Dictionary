@@ -1,6 +1,6 @@
 package com.trdz.dictionary.view.segment_favor
 
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
 
 interface WindowFavorListOnClick {
 	fun onItemClick(data: DataLine, position: Int)

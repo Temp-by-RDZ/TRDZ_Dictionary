@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.trdz.dictionary.databinding.ElementLineBinding
-import com.trdz.dictionary.model.DataLine
+import com.trdz.dictionary.model.data.DataLine
 
 class WindowHistoryListRecycle(private val clickExecutor: WindowHistoryListOnClick): RecyclerView.Adapter<WindowHistoryListRecycle.NoteLine?>() {
 

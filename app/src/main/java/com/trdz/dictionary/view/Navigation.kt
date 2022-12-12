@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import com.trdz.dictionary.R
-import com.trdz.dictionary.base_utility.*
+import com.trdz.dictionary.utility.*
 
 class Navigation(private var fastContainer: Int = 0) {
 
