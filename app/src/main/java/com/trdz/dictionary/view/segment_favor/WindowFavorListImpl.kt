@@ -9,10 +9,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import com.trdz.dictionary.R
 import com.trdz.dictionary.databinding.FragmentFavorListBinding
 import com.trdz.dictionary.model.data.DataLine
-import com.trdz.dictionary.utility.EFFECT_DROP
-import com.trdz.dictionary.utility.EFFECT_MOVEL
-import com.trdz.dictionary.utility.EFFECT_SHOW
+import com.trdz.dictionary.utility.*
 import com.trdz.dictionary.view.CustomOnBackPressed
+import com.trdz.dictionary.view.MenuController
 import com.trdz.dictionary.view.Navigation
 import com.trdz.dictionary.view.segment_history.WindowHistoryListImpl
 import com.trdz.dictionary.view.segment_word.WindowWordListImp
@@ -74,10 +73,11 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu) {
-		val curr = menu.findItem(R.id.app_bar_fav)
-		curr.setIcon(R.drawable.ic_baseline_search_24)
-		val dell = menu.findItem(R.id.app_bar_delete)
-		dell.isVisible = true
+		MenuController().apply {
+			itemDeactivate(menu, MENU_FAVOR)
+			itemActive(menu, MENU_HISTORY, ICON_HISTORY)
+			subItem(menu,true)
+		}
 		super.onPrepareOptionsMenu(menu)
 	}
 

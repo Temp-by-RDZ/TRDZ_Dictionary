@@ -10,9 +10,8 @@ import androidx.lifecycle.Observer
 import com.trdz.dictionary.R
 import com.trdz.dictionary.databinding.FragmentNavigationBinding
 import com.trdz.dictionary.model.data.DataWord
-import com.trdz.dictionary.utility.BUNDLE_SEARCH
-import com.trdz.dictionary.utility.EFFECT_DROP
-import com.trdz.dictionary.utility.hideKeyboard
+import com.trdz.dictionary.utility.*
+import com.trdz.dictionary.view.MenuController
 import com.trdz.dictionary.view.Navigation
 import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl
 import com.trdz.dictionary.view.segment_history.WindowHistoryListImpl
@@ -103,12 +102,11 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu) {
-		val history = menu.findItem(R.id.app_bar_history)
-		history.setIcon(R.drawable.ic_baseline_books)
-		val fav = menu.findItem(R.id.app_bar_fav)
-		fav.setIcon(R.drawable.ic_baseline_favorite_24)
-		val dell = menu.findItem(R.id.app_bar_delete)
-		dell.isVisible = false
+		MenuController().apply {
+			itemActive(menu, MENU_HISTORY, ICON_HISTORY)
+			itemActive(menu, MENU_FAVOR, ICON_FAVOR)
+			subItem(menu,false)
+		}
 		super.onPrepareOptionsMenu(menu)
 	}
 

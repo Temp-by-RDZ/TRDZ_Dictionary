@@ -35,4 +35,10 @@ const val TYPE_CARD = 2
 const val IN_BASIS = 0
 const val IN_STORAGE = 1
 const val IN_SERVER = 2
+const val MENU_DELETE = 1
+const val MENU_FAVOR = 2
+const val MENU_HISTORY = 3
+const val ICON_BACK = 1
+const val ICON_FAVOR = 2
+const val ICON_HISTORY = 3
 

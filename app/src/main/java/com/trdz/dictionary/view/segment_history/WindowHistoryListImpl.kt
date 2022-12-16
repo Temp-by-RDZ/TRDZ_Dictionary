@@ -8,10 +8,9 @@ import androidx.lifecycle.Observer
 import com.trdz.dictionary.R
 import com.trdz.dictionary.databinding.FragmentFavorListBinding
 import com.trdz.dictionary.model.data.DataLine
-import com.trdz.dictionary.utility.EFFECT_DROP
-import com.trdz.dictionary.utility.EFFECT_MOVER
-import com.trdz.dictionary.utility.EFFECT_SHOW
+import com.trdz.dictionary.utility.*
 import com.trdz.dictionary.view.CustomOnBackPressed
+import com.trdz.dictionary.view.MenuController
 import com.trdz.dictionary.view.Navigation
 import com.trdz.dictionary.view.segment_favor.WindowFavorListImpl
 import com.trdz.dictionary.view.segment_word.WindowWordListImp
@@ -83,10 +82,11 @@ class WindowHistoryListImpl: Fragment(), WindowHistoryListOnClick, CustomOnBackP
 	}
 
 	override fun onPrepareOptionsMenu(menu: Menu) {
-		val curr = menu.findItem(R.id.app_bar_history)
-		curr.setIcon(R.drawable.ic_baseline_search_24)
-		val dell = menu.findItem(R.id.app_bar_delete)
-		dell.isVisible = true
+		MenuController().apply {
+			itemDeactivate(menu, MENU_HISTORY)
+			itemActive(menu, MENU_FAVOR, ICON_FAVOR)
+			subItem(menu,true)
+		}
 		super.onPrepareOptionsMenu(menu)
 	}
 
