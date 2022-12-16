@@ -2,6 +2,7 @@ package com.trdz.dictionary.di
 
 import androidx.room.Room
 import com.google.gson.GsonBuilder
+import com.trdz.dictionary.model.source_room.InternalStorage
 import com.trdz.dictionary.model.source_room.database.DataBase
 import com.trdz.dictionary.model.source_room.database.WordDao
 import com.trdz.dictionary.model.source_server.ServerRetrofitApi
@@ -18,8 +19,10 @@ val moduleDataK = module {
 			addConverterFactory(GsonConverterFactory.create(GsonBuilder().setLenient().create()))
 		}.build().create(ServerRetrofitApi::class.java)
 	}
-	single<WordDao>() {
+	scope<InternalStorage> {
+	scoped {
 		Room.databaseBuilder(androidApplication(), DataBase::class.java, "test").build().userDao()
+	}
 	}
 
 }

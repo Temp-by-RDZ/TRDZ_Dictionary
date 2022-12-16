@@ -6,13 +6,17 @@ import com.trdz.dictionary.model.source_room.database.EntityFavor
 import com.trdz.dictionary.model.source_room.database.EntitySearch
 import com.trdz.dictionary.model.source_room.database.EntityWord
 import com.trdz.dictionary.model.source_room.database.WordDao
-import org.koin.java.KoinJavaComponent.inject
+import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.getOrCreateScope
+import org.koin.core.component.inject
+import org.koin.core.scope.Scope
 
-class InternalStorage: ADataSource, InternalData {
+class InternalStorage: ADataSource, InternalData, KoinScopeComponent {
 
 	//region Injected
 
-	private val dataDao: WordDao by inject(WordDao::class.java)
+	override val scope: Scope by getOrCreateScope()
+	private val dataDao: WordDao by inject()
 	private fun getData(): WordDao = dataDao
 
 	//endregion
@@ -149,5 +153,5 @@ class InternalStorage: ADataSource, InternalData {
 	//endregion
 
 	private fun responseEmpty() = Throwable("Error code: 404, Data lost\n")
-	private fun responseFail(error: Exception) = Throwable("Error code: -1, Internal storage unavailable:\n$error")
+	private fun responseFail(error: Exception) = Throwable("fError code: -1, Internal storage unavailable:\n$error")
 }

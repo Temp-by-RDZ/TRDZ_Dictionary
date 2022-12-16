@@ -16,13 +16,13 @@ import kotlinx.coroutines.flow.*
 class WordsViewModel(
 	private val repository: Repository,
 	private val dataLive: SingleLiveData<StatusProcess>,
-): ViewModel() {
+): ViewModel(){
 
 	private var currentData: MutableList<DataWord> = listOf<DataWord>().toMutableList()
 
 	fun getData(): LiveData<StatusProcess> = dataLive
 
-	private val scope = CoroutineScope(
+	private val coroutineScope = CoroutineScope(
 		Dispatchers.IO
 				+ SupervisorJob()
 				+ CoroutineExceptionHandler { _, throwable ->
@@ -61,7 +61,7 @@ class WordsViewModel(
 		with(dataLive) {
 			postValue(StatusProcess.Loading)
 			repository.setSource(IN_STORAGE)
-			jobs = scope.launch {
+			jobs = coroutineScope.launch {
 				when (val response = repository.initWordList(target)) {
 					is RequestResults.SuccessWords -> {
 						Log.d("@@@", "Prs - Internal load complete")
@@ -83,7 +83,7 @@ class WordsViewModel(
 		with(dataLive) {
 			postValue(StatusProcess.Loading)
 			repository.setSource(IN_SERVER)
-			jobs = scope.launch {
+			jobs = coroutineScope.launch {
 				when (val response = repository.initWordList(target)) {
 					is RequestResults.SuccessWords -> {
 						Log.d("@@@", "Prs - External load complete")
@@ -119,11 +119,11 @@ class WordsViewModel(
 	}
 
 	fun favAdd(data: DataWord) {
-		jobs = scope.launch { repository.addFavorite(DataLine(data.id, data.name)) }
+		jobs = coroutineScope.launch { repository.addFavorite(DataLine(data.id, data.name)) }
 	}
 
 	fun favRemove(data: DataWord) {
-		jobs = scope.launch { repository.removeFavorite(DataLine(data.id, data.name)) }
+		jobs = coroutineScope.launch { repository.removeFavorite(DataLine(data.id, data.name)) }
 	}
 
 	fun visualChange(data: DataWord, position: Int) {
