@@ -19,6 +19,7 @@ object Deps {
 	const val COROUTINES_CORE = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.3"
 	const val COROUTINES_ANDROID = "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3"
 	//Extension
+	const val ANDX_SC = "androidx.core:core-splashscreen:1.0.0-rc01"  //A12 splash screen
 	const val ANDX_VM = "androidx.lifecycle:lifecycle-viewmodel-ktx:2.4.0"  //MVVM ViewModel addon
 	const val ANDX_LD = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.1"   //LiveData addon
 	const val ANDX_FRAGMENT = "androidx.fragment:fragment-ktx:1.4.0"              //Fragment addon
