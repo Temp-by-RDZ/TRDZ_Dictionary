@@ -73,8 +73,16 @@ dependencies {
     implementation(Deps.ANDX_APPCOMPAT)
     implementation(Deps.ANDX_CONSTRAINT)
     implementation(Deps.AND_MATERIAL)
+    //Testing
     testImplementation(Deps.TEST_JUNIT)
     androidTestImplementation(Deps.TEST_X_JUNIT)
     androidTestImplementation(Deps.TEST_ESPRESSO)
+    testImplementation(Deps.TEST_VM)
+    testImplementation(Deps.TEST_MOCKITO)
+    testImplementation(Deps.TEST_MOCKITO_LINE)
+    testImplementation(Deps.TEST_MOCKITO_KOTLIN) {
+        exclude("org.jetbrains.kotlin")
+        exclude("org.mockito")
+    }
 
 }

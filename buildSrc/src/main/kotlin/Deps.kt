@@ -35,4 +35,8 @@ object Deps {
 	const val TEST_JUNIT = "junit:junit:4.+"
 	const val TEST_X_JUNIT = "androidx.test.ext:junit:1.1.3"
 	const val TEST_ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"
+	const val TEST_MOCKITO = "org.mockito:mockito-core:2.19.0"
+	const val TEST_MOCKITO_LINE =  "org.mockito:mockito-inline:2.8.9"
+	const val TEST_MOCKITO_KOTLIN =  "org.mockito:mockito-inline:2.8.9"
+	const val TEST_VM = "androidx.arch.core:core-testing:2.1.0"
 }

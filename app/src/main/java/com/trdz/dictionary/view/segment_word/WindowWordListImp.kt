@@ -65,6 +65,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	private fun vmSetup() {
 		val observer = Observer<StatusProcess> { renderData(it) }
 		viewModel.getData().observe(viewLifecycleOwner, observer)
+		viewModel.controlledInit()
 	}
 
 	private fun bindings() {

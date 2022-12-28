@@ -37,7 +37,11 @@ class WordsViewModel(
 
 	private val querySearch = MutableStateFlow("")
 
-	init {
+	fun controlledSet(list: MutableList<DataWord>) {
+		currentData = list
+	}
+
+	fun controlledInit() {
 		CoroutineScope(Dispatchers.Main).launch {
 			querySearch.debounce(750)
 				.filter { query -> return@filter query.isNotEmpty() }
