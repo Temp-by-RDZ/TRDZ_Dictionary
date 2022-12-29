@@ -60,7 +60,6 @@ dependencies {
     implementation(Deps.COROUTINES_CORE)
     implementation(Deps.COROUTINES_ANDROID)
     //Extension
-    implementation(Deps.ANDX_SC)        //A12 splash screen
     implementation(Deps.ANDX_VM)        //MVVM ViewModel addon
     implementation(Deps.ANDX_LD)        //LiveData addon
     implementation(Deps.ANDX_FRAGMENT)  //Fragment addon

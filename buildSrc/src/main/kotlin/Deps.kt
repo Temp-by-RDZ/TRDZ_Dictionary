@@ -32,6 +32,7 @@ object Deps {
 	const val ANDX_APPCOMPAT = "androidx.appcompat:appcompat:1.4.2"
 	const val AND_MATERIAL = "com.google.android.material:material:1.6.1"
 	const val ANDX_CONSTRAINT = "androidx.constraintlayout:constraintlayout:2.0.4"
+	//Test
 	const val TEST_JUNIT = "junit:junit:4.+"
 	const val TEST_X_JUNIT = "androidx.test.ext:junit:1.1.3"
 	const val TEST_ESPRESSO = "androidx.test.espresso:espresso-core:3.4.0"

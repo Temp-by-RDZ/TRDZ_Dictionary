@@ -54,7 +54,6 @@ class MainActivity: AppCompatActivity() {
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
-		alterSplashScreen()
 		themeSettings()
 		setContentView(R.layout.activity_main)
 		menuConstruct()
@@ -62,29 +61,6 @@ class MainActivity: AppCompatActivity() {
 			Log.d("@@@", "Start program")
 			navigation.add(supportFragmentManager, WindowStart(), false, R.id.container_fragment_primal)
 		}
-	}
-
-	private fun alterSplashScreen() {
-		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return
-		val ssc = installSplashScreen()
-		ssc.setKeepOnScreenCondition { true }
-		Executors.newSingleThreadExecutor().execute {
-			Thread.sleep(2000)
-			ssc.setKeepOnScreenCondition { false }
-		}
-		ssc.setOnExitAnimationListener { provider ->
-			ObjectAnimator.ofFloat(
-				provider.view,
-				View.TRANSLATION_Y,
-				0f,
-				provider.view.height.toFloat()
-			).apply {
-				duration = 500
-				interpolator = AccelerateDecelerateInterpolator()
-				doOnEnd { provider.remove() }
-			}
-		}
-
 	}
 
 	private fun themeSettings() {
