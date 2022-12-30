@@ -60,7 +60,6 @@ dependencies {
     implementation(Deps.COROUTINES_CORE)
     implementation(Deps.COROUTINES_ANDROID)
     //Extension
-    implementation(Deps.ANDX_SC)        //A12 splash screen
     implementation(Deps.ANDX_VM)        //MVVM ViewModel addon
     implementation(Deps.ANDX_LD)        //LiveData addon
     implementation(Deps.ANDX_FRAGMENT)  //Fragment addon
@@ -73,8 +72,16 @@ dependencies {
     implementation(Deps.ANDX_APPCOMPAT)
     implementation(Deps.ANDX_CONSTRAINT)
     implementation(Deps.AND_MATERIAL)
+    //Testing
     testImplementation(Deps.TEST_JUNIT)
     androidTestImplementation(Deps.TEST_X_JUNIT)
     androidTestImplementation(Deps.TEST_ESPRESSO)
+    testImplementation(Deps.TEST_VM)
+    testImplementation(Deps.TEST_MOCKITO)
+    testImplementation(Deps.TEST_MOCKITO_LINE)
+    testImplementation(Deps.TEST_MOCKITO_KOTLIN) {
+        exclude("org.jetbrains.kotlin")
+        exclude("org.mockito")
+    }
 
 }
