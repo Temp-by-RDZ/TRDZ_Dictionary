@@ -1,8 +1,8 @@
 plugins {
     id("com.android.application")
     id("kotlin-android")
+    id("kotlin-android-extensions")
     id("kotlin-kapt")
-    id("kotlin-parcelize")
 }
 
 android {
@@ -34,6 +34,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = "1.8"
+    }
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+        }
     }
 }
 
@@ -72,10 +77,10 @@ dependencies {
     implementation(Deps.ANDX_APPCOMPAT)
     implementation(Deps.ANDX_CONSTRAINT)
     implementation(Deps.AND_MATERIAL)
-    //Testing
+    //Testing Core
     testImplementation(Deps.TEST_JUNIT)
-    androidTestImplementation(Deps.TEST_X_JUNIT)
-    androidTestImplementation(Deps.TEST_ESPRESSO)
+    androidTestImplementation(Deps.AND_TEST_X_JUNIT)
+    androidTestImplementation(Deps.AND_TEST_ESPRESSO)
     testImplementation(Deps.TEST_VM)
     testImplementation(Deps.TEST_MOCKITO)
     testImplementation(Deps.TEST_MOCKITO_LINE)
@@ -83,5 +88,13 @@ dependencies {
         exclude("org.jetbrains.kotlin")
         exclude("org.mockito")
     }
+    //Testing UI
+    testImplementation(Deps.TEST_ROBO)
+    testImplementation(Deps.TEST_CORE)
+    testImplementation(Deps.TEST_X_JUNIT)
+    testImplementation(Deps.TEST_RUNER)
+    testImplementation(Deps.TEST_ESP_INTENT)
+    testImplementation(Deps.AND_TEST_X_JUNIT)
+    testImplementation(Deps.AND_TEST_ESPRESSO)
 
 }

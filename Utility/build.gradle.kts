@@ -40,5 +40,5 @@ dependencies {
     implementation(Deps.ANDX_CORE)
     implementation(Deps.AND_MATERIAL)
     testImplementation(Deps.TEST_JUNIT)
-    androidTestImplementation(Deps.TEST_X_JUNIT)
+    androidTestImplementation(Deps.AND_TEST_X_JUNIT)
 }

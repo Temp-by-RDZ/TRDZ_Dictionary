@@ -4,20 +4,20 @@
 
     <item
         android:id="@+id/app_bar_delete"
-        android:title="Память"
+        android:title="@string/menu_del"
         android:icon="@drawable/ic_baseline_delete_24"
         android:visible="false"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/app_bar_fav"
-        android:title="Избранное"
+        android:title="@string/menu_fav"
         android:icon="@drawable/ic_baseline_favorite_24"
         app:showAsAction="always"/>
 
     <item
         android:id="@+id/app_bar_history"
-        android:title="Память"
+        android:title="@string/menu_mem"
         android:icon="@drawable/ic_baseline_books"
         app:showAsAction="always"/>
 

@@ -1,5 +1,6 @@
 package com.trdz.dictionary.view.segment_favor
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
@@ -7,7 +8,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.ItemTouchHelper
 import com.trdz.dictionary.R
-import com.trdz.dictionary.databinding.FragmentFavorListBinding
+import com.trdz.dictionary.databinding.FragmentMemoryBinding
 import com.trdz.dictionary.model.data.DataLine
 import com.trdz.dictionary.utility.*
 import com.trdz.dictionary.view.CustomOnBackPressed
@@ -23,7 +24,7 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 
 	//region Elements
 
-	private var _binding: FragmentFavorListBinding? = null
+	private var _binding: FragmentMemoryBinding? = null
 	private val binding get() = _binding!!
 	private val adapter = WindowFavorListRecycle(this)
 
@@ -53,7 +54,7 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		_binding = FragmentFavorListBinding.inflate(inflater, container, false)
+		_binding = FragmentMemoryBinding.inflate(inflater, container, false)
 		ItemTouchHelper(WindowFavorTouch(adapter)).attachToRecyclerView(binding.recyclerView)
 		return binding.root
 	}
@@ -99,7 +100,14 @@ class WindowFavorListImpl: Fragment(), WindowFavorListOnClick, CustomOnBackPress
 	}
 
 	private fun bindings() {
-		binding.recyclerView.adapter = adapter
+		with(binding) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
+					naming.isSelected = binding.recyclerView.canScrollVertically(-1)
+				}
+			}
+			recyclerView.adapter = adapter
+		}
 	}
 
 	private fun initialize(list: List<DataLine>) {

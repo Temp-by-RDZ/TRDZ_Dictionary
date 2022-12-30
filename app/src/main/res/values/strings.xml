@@ -8,4 +8,7 @@
     <string name="е">игиф</string>
     <string name="favor_title">Избранное</string>
     <string name="history">Историә</string>
+    <string name="menu_fav">Избранное</string>
+    <string name="menu_mem">Память</string>
+    <string name="menu_del">Удалить</string>
 </resources>
