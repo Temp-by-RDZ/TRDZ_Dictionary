@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.trdz.dictionary.R
-import com.trdz.dictionary.databinding.FragmentNavigationBinding
+import com.trdz.dictionary.databinding.FragmentSearchBinding
 import com.trdz.dictionary.model.data.DataWord
 import com.trdz.dictionary.utility.*
 import com.trdz.dictionary.view.MenuController
@@ -25,7 +25,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 
 	//region Elements
 
-	private var _binding: FragmentNavigationBinding? = null
+	private var _binding: FragmentSearchBinding? = null
 	private val binding get() = _binding!!
 	private val adapter = WindowWordListRecycle(this)
 
@@ -50,7 +50,7 @@ class WindowWordListImp: Fragment(), WindowWordListOnClick {
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		_binding = FragmentNavigationBinding.inflate(inflater, container, false)
+		_binding = FragmentSearchBinding.inflate(inflater, container, false)
 		return binding.root
 	}
 

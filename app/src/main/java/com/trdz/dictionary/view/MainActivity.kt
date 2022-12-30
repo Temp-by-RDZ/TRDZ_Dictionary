@@ -10,7 +10,6 @@ import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.animation.doOnEnd
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.trdz.dictionary.R
 import com.trdz.dictionary.utility.KEY_OPTIONS
 import com.trdz.dictionary.utility.KEY_THEME

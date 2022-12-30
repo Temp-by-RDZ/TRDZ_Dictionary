@@ -1,12 +1,13 @@
 package com.trdz.dictionary.view.segment_history
 
+import android.os.Build
 import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.trdz.dictionary.R
-import com.trdz.dictionary.databinding.FragmentFavorListBinding
+import com.trdz.dictionary.databinding.FragmentMemoryBinding
 import com.trdz.dictionary.model.data.DataLine
 import com.trdz.dictionary.utility.*
 import com.trdz.dictionary.view.CustomOnBackPressed
@@ -22,7 +23,7 @@ class WindowHistoryListImpl: Fragment(), WindowHistoryListOnClick, CustomOnBackP
 
 	//region Elements
 
-	private var _binding: FragmentFavorListBinding? = null
+	private var _binding: FragmentMemoryBinding? = null
 	private val binding get() = _binding!!
 	private val adapter = WindowHistoryListRecycle(this)
 
@@ -52,7 +53,7 @@ class WindowHistoryListImpl: Fragment(), WindowHistoryListOnClick, CustomOnBackP
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-		_binding = FragmentFavorListBinding.inflate(inflater, container, false)
+		_binding = FragmentMemoryBinding.inflate(inflater, container, false)
 		return binding.root
 	}
 
@@ -73,8 +74,15 @@ class WindowHistoryListImpl: Fragment(), WindowHistoryListOnClick, CustomOnBackP
 	}
 
 	private fun bindings() {
-		binding.naming.text = getString(R.string.history)
-		binding.recyclerView.adapter = adapter
+		with(binding) {
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				recyclerView.setOnScrollChangeListener { _, _, _, _, _ ->
+					naming.isSelected = binding.recyclerView.canScrollVertically(-1)
+				}
+			}
+			naming.text = getString(R.string.history)
+			recyclerView.adapter = adapter
+		}
 	}
 
 	private fun setMenu() {
