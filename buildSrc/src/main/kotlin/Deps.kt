@@ -46,17 +46,7 @@ object Deps {
 	const val TEST_X_JUNIT 			= "androidx.test.ext:truth:1.3.0"
 	const val TEST_RUNER			= "androidx.test:runner:1.3.0"
 	const val TEST_ESP_INTENT		= "androidx.test.espresso:espresso-intents:3.3.0"
-
-
-	//Robolectric
-	//	testImplementation 		      'androidx.test.ext:junit:1.1.2'
-//	testImplementation 'androidx.test.espresso:espresso-core:3.3.0'
-
-
-
-
-
-
+	const val AND_TEST_AUTOMATOR	= "androidx.test.uiautomator:uiautomator:2.2.0"
 
 
 }

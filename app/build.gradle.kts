@@ -95,6 +95,6 @@ dependencies {
     testImplementation(Deps.TEST_RUNER)
     testImplementation(Deps.TEST_ESP_INTENT)
     testImplementation(Deps.AND_TEST_X_JUNIT)
-    testImplementation(Deps.AND_TEST_ESPRESSO)
+    androidTestImplementation(Deps.AND_TEST_AUTOMATOR)
 
 }
