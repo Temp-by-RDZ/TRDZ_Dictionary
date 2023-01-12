@@ -10,6 +10,12 @@ import androidx.test.uiautomator.By
 import androidx.test.uiautomator.UiDevice
 import androidx.test.uiautomator.UiObject2
 import androidx.test.uiautomator.Until
+import com.geekbrains.tests.*
+import com.geekbrains.tests.TEST_ITEM_MEMORY
+import com.geekbrains.tests.TEST_ITEM_SEARCHER
+import com.geekbrains.tests.TEST_MENU_FAVOR
+import com.geekbrains.tests.TEST_MENU_HISTORY
+import com.geekbrains.tests.TEST_TITLE_FAV
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
@@ -35,36 +41,36 @@ class BehaviorTest {
 
 	@Test
 	fun test_WorkStateStarted() {
-		val bottomBar = uiDevice.findObject(By.res(packageName, "bottom_app_bar"))
+		val bottomBar = uiDevice.findObject(By.res(packageName, TEST_ITEM_SEARCHER))
 		Assert.assertNotNull(bottomBar)
 	}
 
 	@Test
 	fun test_OpenFavorScreen() {
-		val toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_fav"))
+		val toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_FAVOR))
 		toFavor.click()
 		val qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		val title = uiDevice.findObject(By.res(packageName, "naming"))
-		Assert.assertEquals(title.text, "Избранное")
+		val title = uiDevice.findObject(By.res(packageName, TEST_ITEM_TITLE))
+		Assert.assertEquals(title.text, TEST_TITLE_FAV)
 	}
 
 	@Test
 	fun test_BackFromFavorScreen() {
-		var toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_fav"))
+		var toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_FAVOR))
 		toFavor.click()
 		val qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		toFavor = uiDevice.findObject( By.res(packageName, "app_bar_fav"))
+		toFavor = uiDevice.findObject( By.res(packageName, TEST_MENU_FAVOR))
 		toFavor.click()
 		val searcher = uiDevice.wait(
-			Until.findObject(By.res(packageName, "target")),
+			Until.findObject(By.res(packageName, TEST_ITEM_SEARCH)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(searcher)
@@ -72,50 +78,50 @@ class BehaviorTest {
 
 	@Test
 	fun test_FromFavorToHistoryScreen() {
-		val toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_fav"))
+		val toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_FAVOR))
 		toFavor.click()
 		var qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		val toHistory: UiObject2 =  uiDevice.findObject( By.res(packageName, "app_bar_history"))
+		val toHistory: UiObject2 =  uiDevice.findObject( By.res(packageName, TEST_MENU_HISTORY))
 		toHistory.click()
 		qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		val title = uiDevice.findObject(By.res(packageName, "naming"))
-		Assert.assertEquals(title.text, "Историә")
+		val title = uiDevice.findObject(By.res(packageName, TEST_ITEM_TITLE))
+		Assert.assertEquals(title.text, TEST_TITLE_HISTORY)
 	}
 
 	@Test
 	fun test_OpenHistoryScreen() {
-		val toHistory: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_history"))
+		val toHistory: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_HISTORY))
 		toHistory.click()
 		val qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		val title = uiDevice.findObject(By.res(packageName, "naming"))
-		Assert.assertEquals(title.text, "Историә")
+		val title = uiDevice.findObject(By.res(packageName, TEST_ITEM_TITLE))
+		Assert.assertEquals(title.text, TEST_TITLE_HISTORY)
 	}
 
 	@Test
 	fun test_BackFromHistoryScreen() {
-		val toHistory: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_history"))
+		val toHistory: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_HISTORY))
 		toHistory.click()
 		val qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		val toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_history"))
+		val toFavor: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_HISTORY))
 		toFavor.click()
 		val searcher = uiDevice.wait(
-			Until.findObject(By.res(packageName, "target")),
+			Until.findObject(By.res(packageName, TEST_ITEM_SEARCH)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(searcher)
@@ -123,22 +129,22 @@ class BehaviorTest {
 
 	@Test
 	fun test_FromHistoryToFavorScreen() {
-		var toHistory: UiObject2 = uiDevice.findObject( By.res(packageName, "app_bar_history"))
+		var toHistory: UiObject2 = uiDevice.findObject( By.res(packageName, TEST_MENU_HISTORY))
 		toHistory.click()
 		var qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		toHistory = uiDevice.findObject( By.res(packageName, "app_bar_fav"))
+		toHistory = uiDevice.findObject( By.res(packageName, TEST_MENU_FAVOR))
 		toHistory.click()
 		qualifier = uiDevice.wait(
-			Until.findObject(By.res(packageName, "memory_qualifier")),
+			Until.findObject(By.res(packageName, TEST_ITEM_MEMORY)),
 			TIMEOUT
 		)
 		Assert.assertNotNull(qualifier)
-		val title = uiDevice.findObject(By.res(packageName, "naming"))
-		Assert.assertEquals(title.text, "Избранное")
+		val title = uiDevice.findObject(By.res(packageName, TEST_ITEM_TITLE))
+		Assert.assertEquals(title.text, TEST_TITLE_FAV)
 	}
 
 	companion object {

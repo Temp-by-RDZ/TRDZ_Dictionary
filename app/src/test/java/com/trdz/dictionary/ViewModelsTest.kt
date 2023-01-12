@@ -1,6 +1,9 @@
 package com.trdz.dictionary
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import com.geekbrains.tests.TEST_ERROR_TEXT1
+import com.geekbrains.tests.TEST_ERROR_TEXT2
+import com.geekbrains.tests.TEST_ERROR_TEXT3
 import com.trdz.dictionary.model.Repository
 import com.trdz.dictionary.model.data.DataWord
 import com.trdz.dictionary.model.data.VisualState
@@ -48,7 +51,7 @@ class ViewModelsTest {
 		vm.getSaved()
 		val actual = vm.getData().value
 		val expected = StatusProcess.ForceSet(answerEmpty)
-		assertEquals("Wrong Answer on Empty memory",actual,expected)
+		assertEquals(TEST_ERROR_TEXT3,actual,expected)
 	}
 
 	private fun setForceData() = mutableListOf(
@@ -67,7 +70,7 @@ class ViewModelsTest {
 		vm.getSaved()
 		val actual = vm.getData().value
 		val expected = StatusProcess.Success(ModelResult(answerFull))
-		assertEquals("Wrong Answer on Full memory",actual,expected)
+		assertEquals(TEST_ERROR_TEXT2,actual,expected)
 	}
 	@Test
 	fun testStateChange() {
@@ -78,9 +81,9 @@ class ViewModelsTest {
 		vm.visualChange(answerFull[id],id)
 		val actual = vm.getData().value
 		answerFull[id].visual.state=1
-		answerFull[id+1].visual.state=1 //count +1 becouse this is sub folder
+		answerFull[id+1].visual.state=1 //count +1 because this is sub folder
 		val expected = StatusProcess.Change(answerFull,id+1,1)
-		assertEquals("Wrong Change of Group Visibility",actual,expected)
+		assertEquals(TEST_ERROR_TEXT1,actual,expected)
 	}
 
 }
