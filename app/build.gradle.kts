@@ -40,6 +40,13 @@ android {
             isIncludeAndroidResources = true
         }
     }
+    sourceSets.getByName("androidTest") {
+        java.srcDir("src/sharedTestData/java")
+    }
+    sourceSets.getByName("test") {
+        java.srcDir("src/sharedTestData/java")
+    }
+
 }
 
 dependencies {
@@ -48,6 +55,9 @@ dependencies {
 
     //Data Room
     implementation(Deps.ROOM_CORE)
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test.espresso:espresso-contrib:3.5.1")
     kapt(Deps.ROOM_COMPILER)
     //Server
     implementation(Deps.RETROFIT_CORE)  //Functional Requests
