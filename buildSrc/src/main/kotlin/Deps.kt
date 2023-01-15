@@ -38,15 +38,16 @@ object Deps {
 	const val TEST_JUNIT 			= "junit:junit:4.13.2"
 	const val TEST_MOCKITO 			= "org.mockito:mockito-core:2.19.0"
 	const val TEST_MOCKITO_LINE 	= "org.mockito:mockito-inline:2.8.9"
-	const val TEST_MOCKITO_KOTLIN 	= "org.mockito:mockito-inline:2.8.9"
+	const val TEST_MOCKITO_KOTLIN 	= "com.nhaarman:mockito-kotlin:1.5.0"
 	const val TEST_VM 				= "androidx.arch.core:core-testing:2.1.0"
+	const val TEST_FRAGMENT			= "androidx.fragment:fragment-testing:1.3.3" 		//Fragment
+	const val TEST_RECYCLE			= "androidx.test.espresso:espresso-contrib:3.3.0" 	//RecyclerView
 	//Test UI
 	const val TEST_ROBO				= "org.robolectric:robolectric:4.5.1"
-	const val TEST_CORE 			= "androidx.test:core:1.3.0"
+	const val TEST_CORE 			= "androidx.test:core:1.4.0"
 	const val TEST_X_JUNIT 			= "androidx.test.ext:truth:1.3.0"
 	const val TEST_RUNER			= "androidx.test:runner:1.3.0"
 	const val TEST_ESP_INTENT		= "androidx.test.espresso:espresso-intents:3.3.0"
 	const val AND_TEST_AUTOMATOR	= "androidx.test.uiautomator:uiautomator:2.2.0"
-
 
 }

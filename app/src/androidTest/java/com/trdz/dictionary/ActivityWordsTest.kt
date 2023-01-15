@@ -4,34 +4,64 @@ import android.view.InputDevice
 import android.view.MotionEvent
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.RecyclerView
+import androidx.test.core.app.ActivityScenario
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.NoMatchingViewException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewAssertion
 import androidx.test.espresso.action.*
 import androidx.test.espresso.action.ViewActions.*
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import com.trdz.dictionary.view.segment_word.WindowWordListImp
+import com.trdz.dictionary.view.MainActivity
+import com.trdz.dictionary.view.segment_word.WindowWordListRecycle
 import org.hamcrest.CoreMatchers.allOf
 import org.hamcrest.Matcher
+import org.hamcrest.core.IsNot.not
+import org.junit.After
 import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
 @RunWith(AndroidJUnit4::class)
-class FragmentWordsTest {
+class ActivityWordsTest {
 
-	//WARNING IMPORT CONFLICT
-
-	//private lateinit var scenario: FragmentScenario<WindowWordListImp>
+	private lateinit var scenario: ActivityScenario<MainActivity>
 
 	@Before
 	fun setup() {
-		//scenario = launchFragmentInContainer()
+		scenario = ActivityScenario.launch(MainActivity::class.java)
+	}
+
+	@Test
+	fun activitySearch_ScrollTo() {
+		onView(withId(R.id.target)).perform(setSearchViewText("dog"))
+		onView(isRoot()).perform(delay())
+		onView(withId(R.id.recyclerView))
+			.perform(
+				RecyclerViewActions.scrollTo<RecyclerView.ViewHolder>(
+					hasDescendant(withText("dogleg"))
+				)
+			)
+	}
+
+	@Test
+	fun activitySearch_PerformClickAtPosition() {
+		onView(withId(R.id.target)).perform(setSearchViewText("dog"))
+		onView(isRoot()).perform(delay())
+		onView(withId(R.id.recyclerView))
+			.perform(
+				RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(
+					0,
+					click()
+				)
+			)
 	}
 
 	@Test
@@ -113,6 +143,11 @@ class FragmentWordsTest {
 				uiController.loopMainThreadForAtLeast(3000)
 			}
 		}
+	}
+
+	@After
+	fun close() {
+		scenario.close()
 	}
 
 	companion object {

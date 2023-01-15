@@ -40,6 +40,15 @@ android {
             isIncludeAndroidResources = true
         }
     }
+    /*
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile::class).configureEach {
+    //Даже с фиксом конфликт библиотеки тестирования фрагмента и имортов остался
+    //Предположительно по мимо конфликта с библиотекой VM есть другие пока неопределенные конфликты
+        kotlinOptions {
+            freeCompilerArgs = freeCompilerArgs + "-Xjvm-default=all"
+        }
+    }
+     */
     sourceSets.getByName("androidTest") {
         java.srcDir("src/sharedTestData/java")
     }
@@ -98,6 +107,8 @@ dependencies {
         exclude("org.jetbrains.kotlin")
         exclude("org.mockito")
     }
+    //debugImplementation(Deps.TEST_FRAGMENT)
+    testImplementation(Deps.TEST_RECYCLE)
     //Testing UI
     testImplementation(Deps.TEST_ROBO)
     testImplementation(Deps.TEST_CORE)
@@ -106,5 +117,6 @@ dependencies {
     testImplementation(Deps.TEST_ESP_INTENT)
     testImplementation(Deps.AND_TEST_X_JUNIT)
     androidTestImplementation(Deps.AND_TEST_AUTOMATOR)
+
 
 }
