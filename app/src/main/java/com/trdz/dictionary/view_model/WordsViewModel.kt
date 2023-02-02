@@ -37,6 +37,10 @@ class WordsViewModel(
 
 	private val querySearch = MutableStateFlow("")
 
+	init {
+		controlledInit()
+	}
+
 	fun controlledSet(list: MutableList<DataWord>) {
 		currentData = list
 	}
@@ -57,6 +61,7 @@ class WordsViewModel(
 
 	fun setSearch(search: String) {
 		querySearch.value = search
+		startSearch(search)
 	}
 
 	private fun startSearch(target: String) {
