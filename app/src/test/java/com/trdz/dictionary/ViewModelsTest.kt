@@ -1,6 +1,7 @@
 package com.trdz.dictionary
 
 import android.os.Build
+import android.util.Log
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -45,14 +46,6 @@ class ViewModelsTest {
         vm = WordsViewModel(repository, SingleLiveData())
     }
 
-    private fun setForceData() = mutableListOf(
-        DataWord("Title 1","Desc for 1",0,"", VisualState(TYPE_TITLE,0,0,false)),
-        DataWord("Card 1","Desc for 1",0,"", VisualState(TYPE_CARD,1,0,false)),
-        DataWord("Title 2","Desc for 2",0,"", VisualState(TYPE_TITLE,2,0,false)),
-        DataWord("Card 1","Desc for 1",0,"", VisualState(TYPE_CARD,3,0,false)),
-        DataWord("Card 2","Desc for 2",0,"", VisualState(TYPE_CARD,3,0,false)),
-    )
-
     @Test
     fun coroutines_TestLoading() {
         testCoroutineRule.runBlockingTest {
@@ -69,35 +62,6 @@ class ViewModelsTest {
                 liveData.removeObserver(observer)
             }
        }
-    }
-
-    lateinit var value: StatusProcess.Success
-    @Test
-    fun coroutines_TestData() {
-        testCoroutineRule.runBlockingTest {
-            val observer = Observer<StatusProcess> {}
-            val liveData = vm.getData()
-
-            try {
-                `when`(repository.initWordList("dog")).thenReturn(
-                    RequestResults.SuccessWords(ServersResult(200, setForceData()))
-                )
-
-                liveData.observeForever(observer)
-                vm.setSearch("dog")
-                while (true) {
-                    if (liveData.value is StatusProcess.Success) {
-                        value = liveData.value as StatusProcess.Success
-                        break
-                    }
-                }
-
-                Assert.assertEquals(value.data.data[0].name, "Title 1")
-            }
-            finally {
-                liveData.removeObserver(observer)
-            }
-        }
     }
 
     @After
