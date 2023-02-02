@@ -46,6 +46,15 @@ class ViewModelsTest {
         vm = WordsViewModel(repository, SingleLiveData())
     }
 
+    private fun setForceData() = mutableListOf(
+        DataWord("Title 1","Desc for 1",0,"", VisualState(TYPE_TITLE,0,0,false)),
+        DataWord("Card 1","Desc for 1",0,"", VisualState(TYPE_CARD,1,0,false)),
+        DataWord("Title 2","Desc for 2",0,"", VisualState(TYPE_TITLE,2,0,false)),
+        DataWord("Card 1","Desc for 1",0,"", VisualState(TYPE_CARD,3,0,false)),
+        DataWord("Card 2","Desc for 2",0,"", VisualState(TYPE_CARD,3,0,false)),
+    )
+
+    lateinit var values : String
     @Test
     fun coroutines_TestLoading() {
         testCoroutineRule.runBlockingTest {
@@ -53,15 +62,36 @@ class ViewModelsTest {
             val liveData = vm.getData()
 
             try {
+                `when`(repository.initWordList("dog")).thenReturn(
+                    RequestResults.SuccessWords(ServersResult(200, setForceData()))
+                )
+
                 liveData.observeForever(observer)
                 vm.setSearch("dog")
 
                 Assert.assertEquals(liveData.value, StatusProcess.Loading)
+
             }
             finally {
                 liveData.removeObserver(observer)
             }
-       }
+        }
+    }
+
+    @Test
+    fun coroutines_TestReturnValueIsNotNull() {
+        testCoroutineRule.runBlockingTest {
+            val observer = Observer<WordsViewModel.ScreenState> {}
+            val liveData = vm.getDataTest()
+
+            try {
+                liveData.observeForever(observer)
+                vm.searchGitHub("")
+                Assert.assertNotNull(liveData.value)
+            } finally {
+                liveData.removeObserver(observer)
+            }
+        }
     }
 
     @After
