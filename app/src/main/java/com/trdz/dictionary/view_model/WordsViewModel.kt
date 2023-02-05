@@ -2,6 +2,7 @@ package com.trdz.dictionary.view_model
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.trdz.dictionary.model.data.DataLine
 import com.trdz.dictionary.model.data.DataWord
@@ -37,6 +38,10 @@ class WordsViewModel(
 
 	private val querySearch = MutableStateFlow("")
 
+	init {
+		controlledInit()
+	}
+
 	fun controlledSet(list: MutableList<DataWord>) {
 		currentData = list
 	}
@@ -57,6 +62,30 @@ class WordsViewModel(
 
 	fun setSearch(search: String) {
 		querySearch.value = search
+		startSearch(search)
+	}
+
+	fun getDataTest(): LiveData<ScreenState> = liveData
+	private val dataLivetest = MutableLiveData<ScreenState>()
+	private val liveData: LiveData<ScreenState> = dataLivetest
+	fun searchGitHub(searchQuery: String) {
+		dataLivetest.value = ScreenState.Loading
+		coroutineScope.launch {
+			val searchResponse = "1"
+			val searchResults = searchResponse
+			val totalCount = searchResponse
+			if (searchResults != null && totalCount != null) {
+				dataLivetest.value = ScreenState.Working(searchResponse)
+			} else {
+				dataLivetest.value =
+					ScreenState.Error(Throwable("Search results or total count are null"))
+			}
+		}
+	}
+	sealed class ScreenState {
+		object Loading : ScreenState()
+		data class Working(val searchResponse: String) : ScreenState()
+		data class Error(val error: Throwable) : ScreenState()
 	}
 
 	private fun startSearch(target: String) {

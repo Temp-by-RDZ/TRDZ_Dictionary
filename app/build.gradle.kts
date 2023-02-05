@@ -97,6 +97,7 @@ dependencies {
     implementation(Deps.ANDX_CONSTRAINT)
     implementation(Deps.AND_MATERIAL)
     //Testing Core
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.3")
     testImplementation(Deps.TEST_JUNIT)
     androidTestImplementation(Deps.AND_TEST_X_JUNIT)
     androidTestImplementation(Deps.AND_TEST_ESPRESSO)

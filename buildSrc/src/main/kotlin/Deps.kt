@@ -36,8 +36,8 @@ object Deps {
 	const val AND_TEST_X_JUNIT 		= "androidx.test.ext:junit:1.1.3"
 	const val AND_TEST_ESPRESSO 	= "androidx.test.espresso:espresso-core:3.4.0"
 	const val TEST_JUNIT 			= "junit:junit:4.13.2"
-	const val TEST_MOCKITO 			= "org.mockito:mockito-core:2.19.0"
-	const val TEST_MOCKITO_LINE 	= "org.mockito:mockito-inline:2.8.9"
+	const val TEST_MOCKITO 			= "org.mockito:mockito-core:2.25.1"
+	const val TEST_MOCKITO_LINE 	= "org.mockito:mockito-inline:2.13.0"
 	const val TEST_MOCKITO_KOTLIN 	= "com.nhaarman:mockito-kotlin:1.5.0"
 	const val TEST_VM 				= "androidx.arch.core:core-testing:2.1.0"
 	const val TEST_FRAGMENT			= "androidx.fragment:fragment-testing:1.3.3" 		//Fragment

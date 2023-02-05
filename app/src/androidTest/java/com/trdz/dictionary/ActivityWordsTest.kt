@@ -64,6 +64,21 @@ class ActivityWordsTest {
 			)
 	}
 
+	private fun tapOnItemWithId(id: Int) = object : ViewAction {
+		override fun getConstraints(): Matcher<View>? {
+			return null
+		}
+
+		override fun getDescription(): String {
+			return "Нажимаем на view с указанным id"
+		}
+
+		override fun perform(uiController: UiController, view: View) {
+			val v = view.findViewById(id) as View
+			v.performClick()
+		}
+	}
+
 	@Test
 	fun activity_Stater_Enable() {
 		onView(withId(R.id.disabler)).perform(clickBlind())
